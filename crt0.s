@@ -49,7 +49,11 @@ _init:
           JSR     copydata             ; Initialize DATA segment
           JSR     initlib              ; Run constructors
 
-; ---------------------------------------------------------------------------
+; --------------------------------------------------------------------------
+; Initialize Durango Video
+          LDA #$3c
+          STA $df80
+; ----------------------------------------------------------------------------
 ; Call main()
 
           JSR     _main
@@ -76,9 +80,9 @@ _exit:    JSR     donelib              ; Run destructors
 ; ---------------------------------------------------------------------------
 
 .proc _stop: near
-
-.byte      $DB                    ; Inserts a STP opcode
-
+     CLC
+	forever:
+	BCC forever
 .endproc
 
 ; ---------------------------------------------------------------------------
