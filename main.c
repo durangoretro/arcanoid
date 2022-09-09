@@ -1,8 +1,17 @@
 #include "dlib.h"
 
+void initGame(void);
+int main(void);
+
+void initGame() {
+    startStopwatch();
+    fillScreen(CIAN);
+    stopStopwatch(); 
+}
 
 int main(void){
-    fillScreen(CIAN);
+    // Init game
+    initGame();
     
     // Game loop
     while(1) {
