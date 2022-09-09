@@ -1,7 +1,13 @@
 #include "dlib.h"
 
+/* Procedure definitions */
 void initGame(void);
 int main(void);
+
+/* Game Data */
+unsigned short myunshort;
+
+/* Game Procedures */
 
 void initGame() {
     startStopwatch();
@@ -10,6 +16,7 @@ void initGame() {
 }
 
 int main(void){
+    myunshort = 1;
     // Init game
     initGame();
     

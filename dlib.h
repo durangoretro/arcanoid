@@ -20,14 +20,24 @@
 #define PINK_FLAMINGO 0xee
 #define WHITE 0xff
 
+/* type definitions */
+typedef unsigned char byte;
+typedef unsigned short word;
 
-// System procedures
+typedef struct{
+    byte x, y;
+    word mem;
+    byte color;
+    byte width, height;
+} rectangle;
+
+/* System procedures */
 extern void __fastcall__ waitVSync(void);
 
-// Draw procedures
-extern void __fastcall__ fillScreen(unsigned char color);
+/* Draw procedures */
+extern void __fastcall__ fillScreen(byte color);
 
-//Debug procedures
+/* Debug procedures */
 extern void __fastcall__ consoleLogHex(void);
 extern void __fastcall__ consoleLogBinary(void);
 extern void __fastcall__ consoleLogDecimal(void);
