@@ -1,7 +1,7 @@
 SOURCE_DIR=.
 BUILD_DIR=bin
 
-all: break.bin
+all: arkanoid.bin
 
 
 $(BUILD_DIR)/crt0.o: crt0.s $(BUILD_DIR)
@@ -25,8 +25,8 @@ $(BUILD_DIR)/:
 	mkdir -p $(BUILD_DIR)
 
 	
-break.bin: $(BUILD_DIR)/ $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o $(BUILD_DIR)/sbc.lib
-	ld65 -C durango16k.cfg $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o $(BUILD_DIR)/sbc.lib -o break.bin	
+arkanoid.bin: $(BUILD_DIR)/ $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o $(BUILD_DIR)/sbc.lib
+	ld65 -C durango16k.cfg $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o $(BUILD_DIR)/sbc.lib -o arkanoid.bin	
 
 clean:
-	rm -Rf $(BUILD_DIR) break.bin
+	rm -Rf $(BUILD_DIR) arkanoid.bin

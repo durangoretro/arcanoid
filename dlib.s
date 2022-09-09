@@ -1,5 +1,4 @@
-.export _setVideoMode
-.export _fillScreen
+.export _setVideoMode, _fillScreen, _waitVSync
 
 .zeropage
 VMEM_POINTER: .res 2, $00
@@ -28,4 +27,15 @@ loop:
     RTS
 .endproc
 
+.proc _waitVSync: near
+    ; Wait for vsync end.
+    loop1:
+    BIT $DF88
+    BVS loop1
+    ; Wait for vsync start
+    loop2:
+    BIT $DF88
+    BVC loop2
+    RTS
+.endproc
 
