@@ -1,5 +1,5 @@
-#ifndef _H_VIDEO
-#define _H_VIDEO
+#ifndef _H_DLIB
+#define _H_DLIB
 
 
 //Colours
@@ -20,9 +20,19 @@
 #define PINK_FLAMINGO 0xee
 #define WHITE 0xff
 
-extern void __fastcall__ setVideoMode(unsigned char mode);
-extern void __fastcall__ fillScreen(unsigned char color);
+
+// System procedures
 extern void __fastcall__ waitVSync(void);
+
+// Draw procedures
+extern void __fastcall__ fillScreen(unsigned char color);
+
+//Debug procedures
+extern void __fastcall__ consoleLogHex(void);
+extern void __fastcall__ consoleLogBinary(void);
+extern void __fastcall__ consoleLogDecimal(void);
+extern void __fastcall__ consoleLogChar(void);
+extern void __fastcall__ consoleLogStr(void);
 extern void __fastcall__ startStopwatch(void);
 extern void __fastcall__ stopStopwatch(void);
 
