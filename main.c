@@ -11,15 +11,16 @@ rectangle player;
 
 void initGame() {
     consoleLogStr("Init Game\n");
-    consoleLogHex(0x00);
     startStopwatch();
     fillScreen(CIAN);
     
     player.x = 10;
-    player.y = 10;
+    player.y = 11;
     player.width = 32;
     player.height = 8;
+    player.mem = 0x1234;
     draw_rect(&player);
+    consoleLogStr("\nMEM\n");
     consoleLogWord(player.mem);
     
     stopStopwatch();

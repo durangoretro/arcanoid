@@ -92,17 +92,14 @@ loop:
     BCC skip_upper
     INC VMEM_POINTER+1
     skip_upper:
-    
+    ; Write to struct
     LDA VMEM_POINTER
-    LDY 2
-    STA DATA_POINTER,y
-    STA $df93
-    
+    LDY #2
+    STA (DATA_POINTER),y
     LDA VMEM_POINTER+1
-    LDY 3
-    STA DATA_POINTER,y
-    STA $df93
-    
+    LDY #3
+    STA (DATA_POINTER),y
+        
 	RTS
 .endproc
 ; --- end convert_coords_to_mem ---
