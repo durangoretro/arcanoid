@@ -5,23 +5,33 @@ void initGame(void);
 int main(void);
 
 /* Game Data */
-unsigned short myunshort;
+rectangle player;
 
 /* Game Procedures */
 
 void initGame() {
+    consoleLogStr("Init Game\n");
+    consoleLogHex(0x00);
     startStopwatch();
     fillScreen(CIAN);
-    stopStopwatch(); 
+    
+    player.x = 10;
+    player.y = 10;
+    player.width = 32;
+    player.height = 8;
+    draw_rect(&player);
+    consoleLogWord(player.mem);
+    
+    stopStopwatch();
 }
 
 int main(void){
-    myunshort = 1;
     // Init game
     initGame();
     
+    consoleLogStr("Game loop\n");
     // Game loop
-    while(1) {
+    while(0) {
         // Wait VSYNC
         waitVSync();
         // Start counting time

@@ -2,8 +2,10 @@
 .export _waitVSync
 ; Draw procedures
 .export _fillScreen
+.export _draw_rect
 ; Debug procedures
 .export _consoleLogHex
+.export _consoleLogWord
 .export _consoleLogBinary
 .export _consoleLogDecimal
 .export _consoleLogChar
@@ -17,6 +19,7 @@ DATA_POINTER: .res 2, $00
 
 
 .segment "CODE"
+.PC02
 
 ; ----- SYSTEM PROCEDURES ---
 
@@ -35,7 +38,7 @@ DATA_POINTER: .res 2, $00
 ; ---- DRAW PROCEDURES ---
 .proc _fillScreen: near
     ; Init video pointer
-    LDX #80
+    LDX #$60
     STX VMEM_POINTER+1
     LDY #$00
     STY VMEM_POINTER
@@ -49,6 +52,60 @@ loop:
     RTS
 .endproc
 
+.proc _draw_rect: near
+    JMP _convert_coords_to_mem
+.endproc
+
+; Converts x,y coord into memory pointer.
+; X_COORD, Y_COORD pixel coords
+; VMEM_POINTER VMEM_POINTER+1 current video memory pointer
+.proc _convert_coords_to_mem: near
+    ; Read pointer location
+    STA DATA_POINTER
+    STX DATA_POINTER+1
+    
+    ; Calculate Y coord
+    ; Clear VMEM_POINTER
+    STZ VMEM_POINTER
+    ; Multiply y coord by 64 (64 bytes each row)
+    ; LDA Y_COORD
+    LDY 1
+    LDA (DATA_POINTER),y
+    LSR
+    ROR VMEM_POINTER
+    LSR
+    ROR VMEM_POINTER
+    
+    ; Add base memory address
+    ADC #$80
+    STA VMEM_POINTER+1
+        
+    ; Calculate X coord
+    ; Divide x coord by 2 (2 pixel each byte)
+    ;LDA X_COORD
+    LDA (DATA_POINTER)
+    LSR
+    ; Add to memory address
+    CLC
+    ADC VMEM_POINTER
+    STA VMEM_POINTER
+    BCC skip_upper
+    INC VMEM_POINTER+1
+    skip_upper:
+    
+    LDA VMEM_POINTER
+    LDY 2
+    STA DATA_POINTER,y
+    STA $df93
+    
+    LDA VMEM_POINTER+1
+    LDY 3
+    STA DATA_POINTER,y
+    STA $df93
+    
+	RTS
+.endproc
+; --- end convert_coords_to_mem ---
 
 ; ------ DEBUG PROCEDURES
 
@@ -58,6 +115,16 @@ loop:
 	STX $df94
     ; Send value to virtual serial port
     STA $df93
+    RTS
+.endproc
+
+.proc  _consoleLogWord: near
+    ; Set virtual serial port in hex mode
+    LDY #$00
+	STY $df94
+    ; Send value to virtual serial port
+    STA $df93
+    STX $df93
     RTS
 .endproc
 

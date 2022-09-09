@@ -36,13 +36,15 @@ extern void __fastcall__ waitVSync(void);
 
 /* Draw procedures */
 extern void __fastcall__ fillScreen(byte color);
+extern void __fastcall__ draw_rect(void*);
 
 /* Debug procedures */
-extern void __fastcall__ consoleLogHex(void);
-extern void __fastcall__ consoleLogBinary(void);
-extern void __fastcall__ consoleLogDecimal(void);
-extern void __fastcall__ consoleLogChar(void);
-extern void __fastcall__ consoleLogStr(void);
+extern void __fastcall__ consoleLogHex(byte value);
+extern void __fastcall__ consoleLogWord(word value);
+extern void __fastcall__ consoleLogBinary(byte value);
+extern void __fastcall__ consoleLogDecimal(byte value);
+extern void __fastcall__ consoleLogChar(unsigned char);
+extern void __fastcall__ consoleLogStr(char *str);
 extern void __fastcall__ startStopwatch(void);
 extern void __fastcall__ stopStopwatch(void);
 
