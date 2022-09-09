@@ -23,5 +23,7 @@
 extern void __fastcall__ setVideoMode(unsigned char mode);
 extern void __fastcall__ fillScreen(unsigned char color);
 extern void __fastcall__ waitVSync(void);
+extern void __fastcall__ startStopwatch(void);
+extern void __fastcall__ stopStopwatch(void);
 
 #endif

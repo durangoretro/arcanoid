@@ -8,6 +8,11 @@ int main(void){
     while(1) {
         // Wait VSYNC
         waitVSync();
+        // Start counting time
+        startStopwatch();
+        
+        // Stop counting time
+        stopStopwatch();        
     }
     
     return 0;

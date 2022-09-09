@@ -1,4 +1,4 @@
-.export _setVideoMode, _fillScreen, _waitVSync
+.export _setVideoMode, _fillScreen, _waitVSync, _startStopwatch, _stopStopwatch
 
 .zeropage
 VMEM_POINTER: .res 2, $00
@@ -39,3 +39,14 @@ loop:
     RTS
 .endproc
 
+.proc _startStopwatch: near
+    LDA #$FB
+    STA $DF94
+    RTS
+.endproc
+
+.proc _stopStopwatch: near
+    LDA #$FC
+    STA $DF94
+    RTS
+.endproc
