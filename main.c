@@ -18,9 +18,11 @@ void initGame() {
     player.y = 11;
     player.width = 32;
     player.height = 8;
+	player.color = RED;
     player.mem = 0x1234;
-    draw_rect(&player);
-    consoleLogStr("\nMEM\n");
+    consoleLogHex(0xff);
+	draw_rect(&player);
+    consoleLogStr("\nMEM\n");	
     consoleLogWord(player.mem);
     
     stopStopwatch();

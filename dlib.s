@@ -16,6 +16,8 @@
 .zeropage
 VMEM_POINTER: .res 2, $00
 DATA_POINTER: .res 2, $00
+TEMP1: .res 1, $00
+TEMP2: .res 1, $00
 
 
 .segment "CODE"
@@ -53,16 +55,62 @@ loop:
 .endproc
 
 .proc _draw_rect: near
-    JMP _convert_coords_to_mem
+    ; Calculate memory position
+	JSR _convert_coords_to_mem
+	PHA
+	LDA VMEM_POINTER
+	STA $df93
+	LDA VMEM_POINTER+1
+	STA $df93
+	PLA
+	
+    ; Divide width by 2 and store in temp1
+	LDY #5
+	LDA (DATA_POINTER), Y
+	LSR
+    STA TEMP1
+	
+	; Load height in x
+	LDY #6
+	LDA (DATA_POINTER), Y
+	TAX
+
+	; Load color in A
+	LDY #4
+	LDA (DATA_POINTER), Y
+		
+	paint_row:
+    LDY TEMP1
+	; Draw as many pixels as Y register says
+    DEY
+	paint:
+	STA (VMEM_POINTER), Y
+	DEY
+	BPL paint
+
+	; Next row
+	PHA
+    LDA VMEM_POINTER
+	CLC
+	ADC #$40
+	STA VMEM_POINTER
+	BCC skip_upper
+	INC VMEM_POINTER+1
+ 	skip_upper:
+	PLA
+    DEX
+	BNE paint_row
+
+	RTS
 .endproc
 
-; Converts x,y coord into memory pointer.
-; X_COORD, Y_COORD pixel coords
-; VMEM_POINTER VMEM_POINTER+1 current video memory pointer
 .proc _convert_coords_to_mem: near
     ; Read pointer location
     STA DATA_POINTER
     STX DATA_POINTER+1
+	; Save pointer location
+	PHA
+	PHX
     
     ; Calculate Y coord
     ; Clear VMEM_POINTER
@@ -77,7 +125,7 @@ loop:
     ROR VMEM_POINTER
     
     ; Add base memory address
-    ADC #$80
+    ADC #$60
     STA VMEM_POINTER+1
         
     ; Calculate X coord
@@ -99,10 +147,12 @@ loop:
     LDA VMEM_POINTER+1
     LDY #3
     STA (DATA_POINTER),y
-        
+       
+	; Restore pointer location
+	PLX
+	PLA 
 	RTS
 .endproc
-; --- end convert_coords_to_mem ---
 
 ; ------ DEBUG PROCEDURES
 
