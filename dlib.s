@@ -62,14 +62,14 @@ loop:
     STX DATA_POINTER+1
     
     ; LDA Y_COORD
-    LDY 1
+    LDY #1
     LDA (DATA_POINTER),y
     STA Y_COORD
-    
+        
     ;LDA X_COORD
     LDA (DATA_POINTER)
     STA X_COORD
-    
+        
     ; Calculate memory position
 	JSR _convert_coords_to_mem
     
@@ -84,18 +84,18 @@ loop:
     ; Divide width by 2 and store in temp1
 	LDY #5
 	LDA (DATA_POINTER), Y
-	LSR
+    LSR
     STA TEMP1
 	
 	; Load height in x
 	LDY #6
 	LDA (DATA_POINTER), Y
 	TAX
-
+    
 	; Load color in A
 	LDY #4
 	LDA (DATA_POINTER), Y
-		
+    		
 	paint_row:
     LDY TEMP1
 	; Draw as many pixels as Y register says
@@ -129,7 +129,7 @@ loop:
     ROR VMEM_POINTER
     LSR
     ROR VMEM_POINTER
-    ADC #$40
+    ADC #$60
     STA VMEM_POINTER+1
     ; Calculate X coord
     LDA X_COORD
