@@ -14,11 +14,11 @@ void initGame() {
     startStopwatch();
     fillScreen(CIAN);
     
-    player.x = 10;
-    player.y = 11;
+    player.x = 48;
+    player.y = 120;
     player.width = 32;
-    player.height = 8;
-	player.color = RED;
+    player.height = 6;
+	player.color = MYSTIC_RED;
     player.mem = 0x1234;
     consoleLogHex(0xff);
 	draw_rect(&player);
