@@ -16,6 +16,8 @@
 .zeropage
 VMEM_POINTER: .res 2, $00
 DATA_POINTER: .res 2, $00
+X_COORD: .res 1, $00
+Y_COORD: .res 1, $00
 TEMP1: .res 1, $00
 TEMP2: .res 1, $00
 
@@ -55,15 +57,30 @@ loop:
 .endproc
 
 .proc _draw_rect: near
+    ; Read pointer location
+    STA DATA_POINTER
+    STX DATA_POINTER+1
+    
+    ; LDA Y_COORD
+    LDY 1
+    LDA (DATA_POINTER),y
+    STA Y_COORD
+    
+    ;LDA X_COORD
+    LDA (DATA_POINTER)
+    STA X_COORD
+    
     ; Calculate memory position
 	JSR _convert_coords_to_mem
-	PHA
-	LDA VMEM_POINTER
-	STA $df93
-	LDA VMEM_POINTER+1
-	STA $df93
-	PLA
-	
+    
+    ; Write mem position to struct
+    LDA VMEM_POINTER
+    LDY #2
+    STA (DATA_POINTER),y
+    LDA VMEM_POINTER+1
+    LDY #3
+    STA (DATA_POINTER),y
+    
     ; Divide width by 2 and store in temp1
 	LDY #5
 	LDA (DATA_POINTER), Y
@@ -105,52 +122,24 @@ loop:
 .endproc
 
 .proc _convert_coords_to_mem: near
-    ; Read pointer location
-    STA DATA_POINTER
-    STX DATA_POINTER+1
-	; Save pointer location
-	PHA
-	PHX
-    
     ; Calculate Y coord
-    ; Clear VMEM_POINTER
     STZ VMEM_POINTER
-    ; Multiply y coord by 64 (64 bytes each row)
-    ; LDA Y_COORD
-    LDY 1
-    LDA (DATA_POINTER),y
+    LDA Y_COORD
     LSR
     ROR VMEM_POINTER
     LSR
     ROR VMEM_POINTER
-    
-    ; Add base memory address
-    ADC #$60
+    ADC #$40
     STA VMEM_POINTER+1
-        
     ; Calculate X coord
-    ; Divide x coord by 2 (2 pixel each byte)
-    ;LDA X_COORD
-    LDA (DATA_POINTER)
+    LDA X_COORD
     LSR
-    ; Add to memory address
     CLC
     ADC VMEM_POINTER
     STA VMEM_POINTER
     BCC skip_upper
     INC VMEM_POINTER+1
     skip_upper:
-    ; Write to struct
-    LDA VMEM_POINTER
-    LDY #2
-    STA (DATA_POINTER),y
-    LDA VMEM_POINTER+1
-    LDY #3
-    STA (DATA_POINTER),y
-       
-	; Restore pointer location
-	PLX
-	PLA 
 	RTS
 .endproc
 
