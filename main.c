@@ -21,16 +21,13 @@ void initGame() {
     player.height = 6;
 	player.color = MYSTIC_RED;
     player.mem = 0x1234;
-    consoleLogHex(0xff);
-	drawRect(&player);
-    consoleLogStr("\nMEM\n");	
-    consoleLogWord(player.mem);
+    drawRect(&player);
     
     stopStopwatch();
 }
 
 void updateGame() {
-    consoleLogStr("Update Game\n");
+    moveRight(&player);
 }
 
 int main(void){
@@ -40,8 +37,10 @@ int main(void){
     consoleLogStr("Game loop\n");
     // Game loop
     while(1) {
+        waitFrames(60);
+        
         // Wait VSYNC
-        waitVSync();
+        waitVSync();                
         // Start counting time
         startStopwatch();
         
@@ -49,7 +48,8 @@ int main(void){
         updateGame();
         
         // Stop counting time
-        stopStopwatch();        
+        stopStopwatch();
+        break;
     }
     
     return 0;

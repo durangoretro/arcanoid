@@ -33,6 +33,8 @@ typedef struct{
 
 /* System procedures */
 extern void __fastcall__ waitVSync(void);
+extern void __fastcall__ waitStart(void);
+extern void __fastcall__ waitFrames(byte);
 
 /* Draw procedures */
 extern void __fastcall__ fillScreen(byte color);

@@ -13,6 +13,8 @@
 .export _startStopwatch
 .export _stopStopwatch
 .export _moveRight
+.export _waitStart
+.export _waitFrames
 
 .zeropage
 VMEM_POINTER: .res 2, $00
@@ -37,6 +39,26 @@ TEMP2: .res 1, $00
     loop2:
     BIT $DF88
     BVC loop2
+    RTS
+.endproc
+
+.proc _waitStart: near
+    wait_loop:
+    BIT $df9c
+    BVS wait_loop
+    RTS
+.endproc
+
+.proc _waitFrames: near
+    TAX
+    wait_vsync_end:
+    BIT $DF88
+    BVS wait_vsync_end
+    wait_vsync_begin:
+    BIT $DF88
+    BVC wait_vsync_begin   
+    DEX
+    BNE wait_vsync_end
     RTS
 .endproc
 
@@ -187,6 +209,15 @@ loop:
     skip_upper:
     DEX
     BNE loop
+    
+    ; Update X coord
+    
+    
+    ; Update VMEM_POINTER
+    LDA VMEM_POINTER
+    INA
+    LDY #2
+    STA (DATA_POINTER), Y    
     
     RTS
 .endproc
