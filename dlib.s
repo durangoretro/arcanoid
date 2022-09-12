@@ -12,6 +12,7 @@
 .export _consoleLogStr
 .export _startStopwatch
 .export _stopStopwatch
+.export _moveRight
 
 .zeropage
 VMEM_POINTER: .res 2, $00
@@ -100,7 +101,7 @@ loop:
     LDY #2
     STA (DATA_POINTER),y
     LDA VMEM_POINTER+1
-    LDY #3
+    INY
     STA (DATA_POINTER),y
     
     ; Divide width by 2 and store in temp1
@@ -144,7 +145,35 @@ loop:
 .endproc
 
 .proc _moveRight: near
-	RTS
+	; Read pointer location
+    STA DATA_POINTER
+    STX DATA_POINTER+1
+    
+    ; Update VMEM_POINTER
+    LDY #2
+    LDA (DATA_POINTER), Y
+    STA VMEM_POINTER
+    INY
+    LDA (DATA_POINTER), Y
+    STA VMEM_POINTER+1
+        
+    ; Divide width by 2 and store in temp1
+	LDY #5
+	LDA (DATA_POINTER), Y
+    LSR
+    STA TEMP1
+        
+    ; Store background color in A
+    LDY TEMP1    
+    INY
+    LDA (VMEM_POINTER), Y
+    STA $df93
+    
+        
+    ; Draw left column
+    STA (VMEM_POINTER)
+    
+    RTS
 .endproc
 
 
