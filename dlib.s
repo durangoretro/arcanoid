@@ -166,6 +166,26 @@ loop:
 	RTS
 .endproc
 
+; Draw column of solid color 
+; VMEM_POINTER: where to draw
+; Y: color
+; X: height
+.proc _drawColumn: near
+    loop:
+    TYA
+    STA (VMEM_POINTER)
+    LDA VMEM_POINTER
+    CLC
+    ADC #$40
+    STA VMEM_POINTER
+    BCC skip_upper
+    INC VMEM_POINTER+1
+    skip_upper:
+    DEX
+    BNE loop
+    RTS
+.endproc
+
 .proc _moveRight: near
 	; Read pointer location
     STA DATA_POINTER
@@ -199,18 +219,7 @@ loop:
     TAY
                     
     ; Draw left column
-    loop:
-    TYA
-    STA (VMEM_POINTER)
-    LDA VMEM_POINTER
-    CLC
-    ADC #$40
-    STA VMEM_POINTER
-    BCC skip_upper
-    INC VMEM_POINTER+1
-    skip_upper:
-    DEX
-    BNE loop
+    JSR _drawColumn
     
     ; Draw right column
     ; Update VMEM_POINTER
@@ -230,18 +239,7 @@ loop:
 	LDY #4
 	LDA (DATA_POINTER), Y
     TAY
-    loop2:
-    TYA
-    STA (VMEM_POINTER)
-    LDA VMEM_POINTER
-    CLC
-    ADC #$40
-    STA VMEM_POINTER
-    BCC skip_upper2
-    INC VMEM_POINTER+1
-    skip_upper2:
-    DEX
-    BNE loop2
+    JSR _drawColumn
     
     
     ; Update X coord
