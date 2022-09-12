@@ -2,7 +2,7 @@
 .export _waitVSync
 ; Draw procedures
 .export _fillScreen
-.export _draw_rect
+.export _drawRect
 ; Debug procedures
 .export _consoleLogHex
 .export _consoleLogWord
@@ -56,7 +56,29 @@ loop:
     RTS
 .endproc
 
-.proc _draw_rect: near
+.proc _convert_coords_to_mem: near
+    ; Calculate Y coord
+    STZ VMEM_POINTER
+    LDA Y_COORD
+    LSR
+    ROR VMEM_POINTER
+    LSR
+    ROR VMEM_POINTER
+    ADC #$60
+    STA VMEM_POINTER+1
+    ; Calculate X coord
+    LDA X_COORD
+    LSR
+    CLC
+    ADC VMEM_POINTER
+    STA VMEM_POINTER
+    BCC skip_upper
+    INC VMEM_POINTER+1
+    skip_upper:
+	RTS
+.endproc
+
+.proc _drawRect: near
     ; Read pointer location
     STA DATA_POINTER
     STX DATA_POINTER+1
@@ -121,27 +143,11 @@ loop:
 	RTS
 .endproc
 
-.proc _convert_coords_to_mem: near
-    ; Calculate Y coord
-    STZ VMEM_POINTER
-    LDA Y_COORD
-    LSR
-    ROR VMEM_POINTER
-    LSR
-    ROR VMEM_POINTER
-    ADC #$60
-    STA VMEM_POINTER+1
-    ; Calculate X coord
-    LDA X_COORD
-    LSR
-    CLC
-    ADC VMEM_POINTER
-    STA VMEM_POINTER
-    BCC skip_upper
-    INC VMEM_POINTER+1
-    skip_upper:
+.proc _moveRight: near
 	RTS
 .endproc
+
+
 
 ; ------ DEBUG PROCEDURES
 

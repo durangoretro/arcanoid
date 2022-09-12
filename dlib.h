@@ -36,7 +36,8 @@ extern void __fastcall__ waitVSync(void);
 
 /* Draw procedures */
 extern void __fastcall__ fillScreen(byte color);
-extern void __fastcall__ draw_rect(void*);
+extern void __fastcall__ drawRect(void*);
+extern void __fastcall__ moveRight(void*);
 
 /* Debug procedures */
 extern void __fastcall__ consoleLogHex(byte value);

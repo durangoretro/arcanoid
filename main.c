@@ -2,6 +2,7 @@
 
 /* Procedure definitions */
 void initGame(void);
+void updateGame(void);
 int main(void);
 
 /* Game Data */
@@ -21,11 +22,15 @@ void initGame() {
 	player.color = MYSTIC_RED;
     player.mem = 0x1234;
     consoleLogHex(0xff);
-	draw_rect(&player);
+	drawRect(&player);
     consoleLogStr("\nMEM\n");	
     consoleLogWord(player.mem);
     
     stopStopwatch();
+}
+
+void updateGame() {
+    consoleLogStr("Update Game\n");
 }
 
 int main(void){
@@ -34,11 +39,14 @@ int main(void){
     
     consoleLogStr("Game loop\n");
     // Game loop
-    while(0) {
+    while(1) {
         // Wait VSYNC
         waitVSync();
         // Start counting time
         startStopwatch();
+        
+        // Update game
+        updateGame();
         
         // Stop counting time
         stopStopwatch();        
