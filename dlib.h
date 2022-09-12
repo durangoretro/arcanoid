@@ -35,11 +35,13 @@ typedef struct{
 extern void __fastcall__ waitVSync(void);
 extern void __fastcall__ waitStart(void);
 extern void __fastcall__ waitFrames(byte);
+extern byte __fastcall__ readGamepad(byte);
 
 /* Draw procedures */
 extern void __fastcall__ fillScreen(byte color);
 extern void __fastcall__ drawRect(void*);
 extern void __fastcall__ moveRight(void*);
+extern void __fastcall__ moveLeft(void*);
 
 /* Debug procedures */
 extern void __fastcall__ consoleLogHex(byte value);

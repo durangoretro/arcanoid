@@ -13,6 +13,9 @@
 
 .include  "zeropage.inc"
 
+.zeropage
+GAMEPADS_DATA: .res 4, $00
+
 ; ---------------------------------------------------------------------------
 ; Place the startup code in a special segment
 
@@ -33,6 +36,19 @@ _init:
           LDX     #$FF                 ; Initialize stack pointer to $01FF
           TXS
           CLD                          ; Clear decimal mode
+
+;----------------------------------------------------------------------------
+; Init gamepads
+    STA $df9c
+    LDX #8
+    loop:
+    STA $df9d
+    DEX
+    BNE loop
+    LDA $df9c
+    LDX $df9d
+    STA GAMEPADS_DATA
+    STX GAMEPADS_DATA+1
 
 ; ---------------------------------------------------------------------------
 ; Set cc65 argument stack pointer
@@ -103,7 +119,20 @@ _irq_int:  PHX                    ; Save X register contents to stack
            BNE break              ; If B = 1, BRK detected
 ; Actual interrupt code
 ;----------------------------------------------------------------------------
-           NOP
+           ; 1. write into $DF9C
+           STA $df9c
+           ; 2. write into $DF9D 8 times
+           LDX #8
+           loop2:
+           STA $df9d
+           DEX
+           BNE loop2
+           LDA $df9c
+           EOR GAMEPADS_DATA
+           STA GAMEPADS_DATA+2
+           LDA $df9d
+           EOR GAMEPADS_DATA+1
+           STA GAMEPADS_DATA+3
 ; ---------------------------------------------------------------------------
 ; IRQ detected, return
 

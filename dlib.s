@@ -17,6 +17,8 @@
 .export _waitStart
 .export _waitFrames
 
+.importzp GAMEPADS_DATA
+
 .zeropage
 VMEM_POINTER: .res 2, $00
 DATA_POINTER: .res 2, $00
@@ -60,6 +62,12 @@ TEMP2: .res 1, $00
     BVC wait_vsync_begin   
     DEX
     BNE wait_vsync_end
+    RTS
+.endproc
+
+.proc _readGamepad: near
+    TAX
+    LDA GAMEPADS_DATA+2, X
     RTS
 .endproc
 

@@ -27,7 +27,10 @@ void initGame() {
 }
 
 void updateGame() {
-    moveRight(&player);
+    byte gamepad;
+    moveLeft(&player);
+    gamepad=readGamepad(0);
+    consoleLogBinary(gamepad);
 }
 
 int main(void){
@@ -35,9 +38,10 @@ int main(void){
     initGame();
     
     consoleLogStr("Game loop\n");
+    consoleLogHex(0xff);
     // Game loop
     while(1) {
-        waitFrames(10);
+        //waitFrames(50);
         
         // Wait VSYNC
         waitVSync();                
