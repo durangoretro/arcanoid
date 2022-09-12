@@ -321,8 +321,11 @@ loop:
     ; Draw right column
     JSR _drawColumn
     
-    PLA
-    PLA
+    ; Update X coord
+    LDA (DATA_POINTER)
+    DEA
+    DEA
+    STA (DATA_POINTER)  
     
     RTS
 .endproc
