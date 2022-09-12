@@ -270,6 +270,7 @@ loop:
     LDY #2
     LDA (DATA_POINTER), Y
     DEA
+    STA (DATA_POINTER), Y
     STA VMEM_POINTER
     PHA
     INY
