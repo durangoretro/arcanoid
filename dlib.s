@@ -13,6 +13,7 @@
 .export _startStopwatch
 .export _stopStopwatch
 .export _moveRight
+.export _moveLeft
 .export _waitStart
 .export _waitFrames
 
@@ -212,7 +213,7 @@ loop:
 	LDA (DATA_POINTER), Y
     TAX
     
-    ; Store background color in A
+    ; Store background color in Y
     LDY TEMP1    
     INY
     LDA (VMEM_POINTER), Y
@@ -260,6 +261,70 @@ loop:
     RTS
 .endproc
 
+.proc _moveLeft: near
+	; Read pointer location
+    STA DATA_POINTER
+    STX DATA_POINTER+1
+    
+    ; Update VMEM_POINTER
+    LDY #2
+    LDA (DATA_POINTER), Y
+    DEA
+    STA VMEM_POINTER
+    PHA
+    INY
+    LDA (DATA_POINTER), Y
+    STA VMEM_POINTER+1
+    PHA
+    
+    ; Store height in X
+	LDY #6
+	LDA (DATA_POINTER), Y
+    TAX
+    
+    ; Store background color in TEMP2
+    LDA (VMEM_POINTER)
+    STA TEMP2
+    
+    ; Load color in y
+	LDY #4
+	LDA (DATA_POINTER), Y
+    TAY
+    
+    ; Draw left column
+    JSR _drawColumn
+    
+    ; Divide width by 2 and store in temp1
+	LDY #5
+	LDA (DATA_POINTER), Y
+    LSR
+    STA TEMP1
+    
+    ; Update VMEM_POINTER
+    PLA
+    STA VMEM_POINTER+1
+    PLA
+    CLC
+    ADC TEMP1
+    STA VMEM_POINTER
+    
+            
+    ; Store height in X
+	LDY #6
+	LDA (DATA_POINTER), Y
+    TAX
+    
+    ; Load background color in y
+    LDY TEMP2
+    
+    ; Draw right column
+    JSR _drawColumn
+    
+    PLA
+    PLA
+    
+    RTS
+.endproc
 
 
 ; ------ DEBUG PROCEDURES
