@@ -37,7 +37,7 @@ int main(void){
     consoleLogStr("Game loop\n");
     // Game loop
     while(1) {
-        waitFrames(60);
+        //waitFrames(60);
         
         // Wait VSYNC
         waitVSync();                
@@ -49,7 +49,7 @@ int main(void){
         
         // Stop counting time
         stopStopwatch();
-        break;
+        
     }
     
     return 0;

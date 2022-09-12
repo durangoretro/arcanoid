@@ -175,9 +175,11 @@ loop:
     LDY #2
     LDA (DATA_POINTER), Y
     STA VMEM_POINTER
+    PHA
     INY
     LDA (DATA_POINTER), Y
     STA VMEM_POINTER+1
+    PHA
         
     ; Divide width by 2 and store in temp1
 	LDY #5
@@ -243,13 +245,19 @@ loop:
     
     
     ; Update X coord
-    
+    LDA (DATA_POINTER)
+    INA
+    INA
+    STA (DATA_POINTER)    
     
     ; Update VMEM_POINTER
-    LDA VMEM_POINTER
+    PLA
+    LDY #3
+    STA (DATA_POINTER), Y
+    PLA
     INA
-    LDY #2
-    STA (DATA_POINTER), Y    
+    DEY
+    STA (DATA_POINTER), Y
     
     RTS
 .endproc
