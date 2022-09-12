@@ -162,16 +162,31 @@ loop:
 	LDA (DATA_POINTER), Y
     LSR
     STA TEMP1
-        
+            
+    ; Store height in X
+	LDY #6
+	LDA (DATA_POINTER), Y
+    TAX
+    
     ; Store background color in A
     LDY TEMP1    
     INY
     LDA (VMEM_POINTER), Y
-    STA $df93
-    
-        
+    TAY
+                    
     ; Draw left column
+    loop:
+    TYA
     STA (VMEM_POINTER)
+    LDA VMEM_POINTER
+    CLC
+    ADC #$40
+    STA VMEM_POINTER
+    BCC skip_upper
+    INC VMEM_POINTER+1
+    skip_upper:
+    DEX
+    BNE loop
     
     RTS
 .endproc
