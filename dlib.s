@@ -210,6 +210,38 @@ loop:
     DEX
     BNE loop
     
+    ; Draw right column
+    ; Update VMEM_POINTER
+    LDY #2
+    LDA (DATA_POINTER), Y
+    CLC
+    ADC TEMP1
+    STA VMEM_POINTER
+    INY
+    LDA (DATA_POINTER), Y
+    STA VMEM_POINTER+1
+    ; Store height in X
+	LDY #6
+	LDA (DATA_POINTER), Y
+    TAX
+    ; Load color in y
+	LDY #4
+	LDA (DATA_POINTER), Y
+    TAY
+    loop2:
+    TYA
+    STA (VMEM_POINTER)
+    LDA VMEM_POINTER
+    CLC
+    ADC #$40
+    STA VMEM_POINTER
+    BCC skip_upper2
+    INC VMEM_POINTER+1
+    skip_upper2:
+    DEX
+    BNE loop2
+    
+    
     ; Update X coord
     
     
