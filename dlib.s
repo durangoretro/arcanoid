@@ -1,5 +1,6 @@
 ; System procedures
 .export _waitVSync
+.export _readGamepad
 ; Draw procedures
 .export _fillScreen
 .export _drawRect
@@ -16,8 +17,6 @@
 .export _moveLeft
 .export _waitStart
 .export _waitFrames
-
-.importzp GAMEPADS_DATA
 
 .zeropage
 VMEM_POINTER: .res 2, $00
@@ -67,7 +66,7 @@ TEMP2: .res 1, $00
 
 .proc _readGamepad: near
     TAX
-    LDA GAMEPADS_DATA+2, X
+    LDA $02, X
     RTS
 .endproc
 

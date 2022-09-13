@@ -13,8 +13,6 @@
 
 .include  "zeropage.inc"
 
-.zeropage
-GAMEPADS_DATA: .res 4, $00
 
 ; ---------------------------------------------------------------------------
 ; Place the startup code in a special segment
@@ -24,21 +22,17 @@ GAMEPADS_DATA: .res 4, $00
 .PC02
 
 ; ---------------------------------------------------------------------------
-; A little light 6502 housekeeping
-
+; Initialize Durango X
 _init:
-; ---------------------------------------------------------------------------  
-; Disable hardware periodic interrupt
-          SEI                          ; Disable interrupts
+    ; Disable interrupts
+    SEI
+    ; Initialize stack pointer to $01FF
+    LDX #$FF
+    TXS
+    ; Clear decimal mode
+    CLD
 
-; ---------------------------------------------------------------------------    
-; Initialize 6502 stack
-          LDX     #$FF                 ; Initialize stack pointer to $01FF
-          TXS
-          CLD                          ; Clear decimal mode
-
-;----------------------------------------------------------------------------
-; Init gamepads
+    ; Init gamepads
     STA $df9c
     LDX #8
     loop:
@@ -47,32 +41,35 @@ _init:
     BNE loop
     LDA $df9c
     LDX $df9d
-    STA GAMEPADS_DATA
-    STX GAMEPADS_DATA+1
+    STA $00
+    STX $01
+    
+    ; Initialize cc65 stack pointer
+    LDA #<(__STACKSTART__ + __STACKSIZE__)
+    STA sp
+    LDA #>(__STACKSTART__ + __STACKSIZE__)
+    STA sp+1
 
-; ---------------------------------------------------------------------------
-; Set cc65 argument stack pointer
+    ; Initialize memory storage
+    ; Clear BSS segment
+    JSR zerobss
+    ; Initialize DATA segment
+    JSR copydata
+    ; Run constructors
+    JSR initlib
 
-          LDA     #<(__STACKSTART__ + __STACKSIZE__)
-          STA     sp
-          LDA     #>(__STACKSTART__ + __STACKSIZE__)
-          STA     sp+1
+    ; Initialize Durango Video
+    LDA #$3c
+    STA $df80
 
-; ---------------------------------------------------------------------------
-; Initialize memory storage
+    ; Enable Durango interrupts
+    LDA #$01
+    STA $DFA0
+    ; Enable interrupts
+    CLI
 
-          JSR     zerobss              ; Clear BSS segment
-          JSR     copydata             ; Initialize DATA segment
-          JSR     initlib              ; Run constructors
-
-; --------------------------------------------------------------------------
-; Initialize Durango Video
-          LDA #$3c
-          STA $df80
-; ----------------------------------------------------------------------------
-; Call main()
-
-          JSR     _main
+    ; Call main()
+    JSR _main
 
 ; ---------------------------------------------------------------------------
 ; Back from main (this is also the _exit entry):  force a software break
@@ -128,11 +125,11 @@ _irq_int:  PHX                    ; Save X register contents to stack
            DEX
            BNE loop2
            LDA $df9c
-           EOR GAMEPADS_DATA
-           STA GAMEPADS_DATA+2
+           EOR $00
+           STA $02
            LDA $df9d
-           EOR GAMEPADS_DATA+1
-           STA GAMEPADS_DATA+3
+           EOR $01
+           STA $03
 ; ---------------------------------------------------------------------------
 ; IRQ detected, return
 
