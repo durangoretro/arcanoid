@@ -8,29 +8,51 @@
 
 .export   __STARTUP__ : absolute = 1        ; Mark as startup
 .import __STACKSTART__, __STACKSIZE__
-
 .import    copydata, zerobss, initlib, donelib
 
 .include  "zeropage.inc"
 
-
-; ---------------------------------------------------------------------------
-; Place the startup code in a special segment
-
-.segment  "STARTUP"
-; Force 65C02 assembly mode
+; Enable 65C02 instruction set
 .PC02
 
+
 ; ---------------------------------------------------------------------------
+; SEGMENT STARTUP
+; ---------------------------------------------------------------------------
+.segment  "STARTUP"
+
+
 ; Initialize Durango X
 _init:
     ; Disable interrupts
     SEI
+
     ; Initialize stack pointer to $01FF
     LDX #$FF
     TXS
+
     ; Clear decimal mode
     CLD
+   
+    ; Initialize cc65 stack pointer
+    LDA #<(__STACKSTART__ + __STACKSIZE__)
+    STA sp
+    LDA #>(__STACKSTART__ + __STACKSIZE__)
+    STA sp+1
+
+    ; Initialize memory storage
+    JSR zerobss
+    JSR copydata
+    JSR initlib
+
+    ; Initialize Durango Video
+    LDA #$3c
+    STA $df80
+
+    ; Enable Durango interrupts
+    LDA #$01
+    STA $DFA0
+    CLI
 
     ; Init gamepads
     STA $df9c
@@ -44,107 +66,53 @@ _init:
     STA $00
     STX $01
     
-    ; Initialize cc65 stack pointer
-    LDA #<(__STACKSTART__ + __STACKSIZE__)
-    STA sp
-    LDA #>(__STACKSTART__ + __STACKSIZE__)
-    STA sp+1
-
-    ; Initialize memory storage
-    ; Clear BSS segment
-    JSR zerobss
-    ; Initialize DATA segment
-    JSR copydata
-    ; Run constructors
-    JSR initlib
-
-    ; Initialize Durango Video
-    LDA #$3c
-    STA $df80
-
-    ; Enable Durango interrupts
-    LDA #$01
-    STA $DFA0
-    ; Enable interrupts
-    CLI
-
     ; Call main()
     JSR _main
 
-; ---------------------------------------------------------------------------
-; Back from main (this is also the _exit entry):  force a software break
+; Back from main (also the _exit entry):
+_exit:
+    ; Run destructors
+    JSR donelib
 
-_exit:    JSR     donelib              ; Run destructors
-          BRK
-
-; ---------------------------------------------------------------------------
-; Wait for interrupt:  Forces the assembler to emit a WAI opcode ($CB)
-; ---------------------------------------------------------------------------
-.proc _wait: near
-
-           CLI                    ; Enable interrupts
-.byte      $CB                    ; Inserts a WAI opcode
-           RTS                    ; Return to caller
-
-.endproc
-
-; ---------------------------------------------------------------------------
-; Stop:  Forces the assembler to emit a STP opcode ($DB)
-; ---------------------------------------------------------------------------
-
+; Stop
 .proc _stop: near
-     CLC
-	forever:
-	BCC forever
+    STP
 .endproc
 
-; ---------------------------------------------------------------------------
 ; Non-maskable interrupt (NMI) service routine
+_nmi_int:
+    ; Return from all NMI interrupts
+    RTI
 
-_nmi_int:  RTI                    ; Return from all NMI interrupts
-
-; ---------------------------------------------------------------------------
 ; Maskable interrupt (IRQ) service routine
-
-_irq_int:  PHX                    ; Save X register contents to stack
-           TSX                    ; Transfer stack pointer to X
-           PHA                    ; Save accumulator contents to stack
-           INX                    ; Increment X so it points to the status
-           INX                    ;   register value saved on the stack
-           LDA $100,X             ; Load status register contents
-           AND #$10               ; Isolate B status bit
-           BNE break              ; If B = 1, BRK detected
-; Actual interrupt code
-;----------------------------------------------------------------------------
-           ; 1. write into $DF9C
-           STA $df9c
-           ; 2. write into $DF9D 8 times
-           LDX #8
-           loop2:
-           STA $df9d
-           DEX
-           BNE loop2
-           LDA $df9c
-           EOR $00
-           STA $02
-           LDA $df9d
-           EOR $01
-           STA $03
-; ---------------------------------------------------------------------------
-; IRQ detected, return
-
-irq:       PLA                    ; Restore accumulator contents
-           PLX                    ; Restore X register contents
-           RTI                    ; Return from all IRQ interrupts
+_irq_int:  
+    ; Save registres and filter BRK
+    PHA
+    PHX
+    TSX
+    LDA $103,X
+    AND #$10
+    BNE _stop
+    ; Read controllers
+    STA $df9c
+    LDX #8
+    loop2:
+    STA $df9d
+    DEX
+    BNE loop2
+    LDA $df9c
+    EOR $00
+    STA $02
+    LDA $df9d
+    EOR $01
+    STA $03       
+    ; Restore registers and return
+    PLX
+    PLA
+    RTI 
 
 ; ---------------------------------------------------------------------------
-; BRK detected, stop
-
-break:     JMP _stop              ; If BRK is detected, something very bad
-                                  ;   has happened, so stop running
-
-; ---------------------------------------------------------------------------
-; vectors
+; SEGMENT VECTTORS
 ; ---------------------------------------------------------------------------
 
 .segment  "VECTORS"
