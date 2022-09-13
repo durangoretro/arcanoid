@@ -2,7 +2,7 @@
 #define _H_DLIB
 
 
-//Colours
+// Colours
 #define BLACK 0x00
 #define GREEN 0x11
 #define RED 0x22
@@ -19,6 +19,16 @@
 #define CIAN 0xdd
 #define PINK_FLAMINGO 0xee
 #define WHITE 0xff
+
+// Gamepad keys
+#define BUTTON_A 0x80
+#define BUTTON_START 0x40
+#define BUTTON_B 0x20
+#define BUTTON_SELECT 0x10
+#define BUTTON_UP 0x08
+#define BUTTON_LEFT 0x04
+#define BUTTON_DOWN 0x02
+#define BUTTON_RIGHT 0x01
 
 /* type definitions */
 typedef unsigned char byte;

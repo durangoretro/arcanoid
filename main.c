@@ -28,9 +28,14 @@ void initGame() {
 
 void updateGame() {
     byte gamepad;
-    moveLeft(&player);
+    
     gamepad=readGamepad(0);
-    consoleLogBinary(gamepad);
+    if(gamepad & BUTTON_LEFT && player.x>0) {
+        moveLeft(&player);
+    }
+    else if(gamepad & BUTTON_RIGHT && player.x+player.width<128) {
+        moveRight(&player);
+    }
 }
 
 int main(void){
@@ -52,8 +57,7 @@ int main(void){
         updateGame();
         
         // Stop counting time
-        stopStopwatch();
-        
+        stopStopwatch();        
     }
     
     return 0;
