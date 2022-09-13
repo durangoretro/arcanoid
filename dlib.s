@@ -4,6 +4,8 @@
 ; Draw procedures
 .export _fillScreen
 .export _drawRect
+.export _drawBall
+.export _moveBall
 ; Debug procedures
 .export _consoleLogHex
 .export _consoleLogWord
@@ -174,6 +176,69 @@ loop:
 	RTS
 .endproc
 
+.proc _drawBall: near
+    ; Read pointer location
+    STA DATA_POINTER
+    STX DATA_POINTER+1
+    
+    ; LDA Y_COORD
+    LDY #1
+    LDA (DATA_POINTER),Y
+    STA Y_COORD
+        
+    ;LDA X_COORD
+    LDA (DATA_POINTER)
+    STA X_COORD
+        
+    ; Calculate memory position
+	JSR _convert_coords_to_mem
+    
+    ; Write mem position to struct
+    LDA VMEM_POINTER
+    LDY #2
+    STA (DATA_POINTER),Y
+    LDA VMEM_POINTER+1
+    INY
+    STA (DATA_POINTER),Y
+    
+    ; Load color in A
+	LDY #4
+	LDA (DATA_POINTER),Y
+    
+    ; Draw ball
+    STA (VMEM_POINTER)
+    LDY #$40
+    STA (VMEM_POINTER),Y
+    
+    RTS
+.endproc
+
+.proc _moveBall: near
+    ; Read pointer location
+    STA DATA_POINTER
+    STX DATA_POINTER+1
+    
+    ; Read mem position from struct
+    LDY #2
+    LDA (DATA_POINTER),Y
+    STA VMEM_POINTER
+    INY
+    LDA (DATA_POINTER),Y
+    STA VMEM_POINTER+1
+    
+    ; Load background color in A
+    LDA $7fff
+    
+    ; Draw ball
+    STA (VMEM_POINTER)
+    LDY #$40
+    STA (VMEM_POINTER),Y
+    
+    LDA DATA_POINTER
+    LDX DATA_POINTER+1
+    JMP _drawBall
+.endproc
+
 ; Draw column of solid color 
 ; VMEM_POINTER: where to draw
 ; Y: color
@@ -221,10 +286,7 @@ loop:
     TAX
     
     ; Store background color in Y
-    LDY TEMP1    
-    INY
-    LDA (VMEM_POINTER), Y
-    TAY
+    LDY $7fff
                     
     ; Draw left column
     JSR _drawColumn
@@ -290,10 +352,6 @@ loop:
 	LDA (DATA_POINTER), Y
     TAX
     
-    ; Store background color in TEMP2
-    LDA (VMEM_POINTER)
-    STA TEMP2
-    
     ; Load color in y
 	LDY #4
 	LDA (DATA_POINTER), Y
@@ -323,7 +381,7 @@ loop:
     TAX
     
     ; Load background color in y
-    LDY TEMP2
+    LDY $7fff
     
     ; Draw right column
     JSR _drawColumn

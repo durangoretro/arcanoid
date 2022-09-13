@@ -41,6 +41,13 @@ typedef struct{
     byte width, height;
 } rectangle;
 
+typedef struct{
+    byte x,y;
+    word mem;
+    byte color;
+    byte vx, vy;
+} ball;
+
 /* System procedures */
 extern void __fastcall__ waitVSync(void);
 extern void __fastcall__ waitStart(void);
@@ -50,6 +57,8 @@ extern byte __fastcall__ readGamepad(byte);
 /* Draw procedures */
 extern void __fastcall__ fillScreen(byte color);
 extern void __fastcall__ drawRect(void*);
+extern void __fastcall__ drawBall(void*);
+extern void __fastcall__ moveBall(void*);
 extern void __fastcall__ moveRight(void*);
 extern void __fastcall__ moveLeft(void*);
 
