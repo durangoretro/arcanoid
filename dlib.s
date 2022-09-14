@@ -47,9 +47,15 @@ TEMP2: .res 1, $00
 .endproc
 
 .proc _waitStart: near
-    wait_loop:
-    BIT $df9c
-    BVS wait_loop
+    loop:
+    BIT $02
+    BMI exit_loop
+    BVS exit_loop
+    BIT $03
+    BMI exit_loop
+    BVS exit_loop
+    BRA loop
+    exit_loop:
     RTS
 .endproc
 
