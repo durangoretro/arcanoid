@@ -8,6 +8,9 @@ void updateGame(void);
 void updateBall(void);
 void updatePlayer(void);
 void initBall(void);
+void initPlayer(void);
+void initBricks(void);
+void resetBall(void);
 int main(void);
 
 /* Game Data */
@@ -18,7 +21,6 @@ rectangle bricks[BRICKS_PER_ROW*BRICKS_ROWS];
 /* Game Procedures */
 
 void initGame() {
-    byte i, j, lastx, lasty;
     consoleLogStr("Init Game\n");
     startStopwatch();
     
@@ -26,7 +28,42 @@ void initGame() {
     fillScreen(CIAN);
     
     // Init and Draw bricks
-    lasty = 0;
+    initBricks();
+    
+    // Init and Draw player
+    initPlayer();
+    
+    // Init and draw ball
+    initBall();
+    
+    stopStopwatch();
+}
+
+void initBall() {
+	myball.color = GREEN;
+    resetBall();
+    drawBall(&myball); 
+}
+
+void resetBall() {
+    myball.x = 62;
+    myball.y = 60;
+    myball.vx=2;
+    myball.vy=-4;
+}
+
+void initPlayer() {
+	player.x = 48;
+    player.y = 122;
+    player.width = 32;
+    player.height = 4;
+	player.color = RED;
+    drawRect(&player);
+}
+
+void initBricks() {
+	byte i, j, lastx, lasty;
+	lasty = 0;
     for(j=0; j<BRICKS_ROWS; j++) {
         lastx = 0;    
         for(i=0; i<BRICKS_PER_ROW; i++) {
@@ -42,28 +79,6 @@ void initGame() {
         consoleLogStr("Lastx\n");
         consoleLogDecimal(lastx);
     }
-    
-    // Init and Draw player
-    player.x = 48;
-    player.y = 122;
-    player.width = 32;
-    player.height = 4;
-	player.color = RED;
-    drawRect(&player);
-    
-    // Init and draw ball
-    myball.color = GREEN;
-    initBall();
-    drawBall(&myball); 
-    
-    stopStopwatch();
-}
-
-void initBall() {
-    myball.x = 62;
-    myball.y = 60;
-    myball.vx=2;
-    myball.vy=-4;
 }
 
 void updateGame() {
