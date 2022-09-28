@@ -1,4 +1,5 @@
 #include "dlib.h"
+#define BRICKS_NUMBER 3
 
 /* Procedure definitions */
 void initGame(void);
@@ -11,11 +12,12 @@ int main(void);
 /* Game Data */
 rectangle player;
 ball myball;
-rectangle bricks[1];
+rectangle bricks[BRICKS_NUMBER];
 
 /* Game Procedures */
 
 void initGame() {
+    byte i, last;
     consoleLogStr("Init Game\n");
     startStopwatch();
     
@@ -23,12 +25,16 @@ void initGame() {
     fillScreen(CIAN);
     
     // Init and Draw bricks
-    bricks[0].x = 0;
-    bricks[0].y = 0;
-    bricks[0].width = 15;
-    bricks[0].height = 4;
-    bricks[0].color = MYSTIC_RED;
-    drawRect(bricks);
+    last = 0;
+    for(i=0; i<BRICKS_NUMBER; i++) {
+        bricks[i].x = last;
+        last = last + 16;
+        bricks[i].y = 0;
+        bricks[i].width = 14;
+        bricks[i].height = 4;
+        bricks[i].color = MYSTIC_RED;
+        drawRect(&bricks[i]);
+    }
     
     // Init and Draw player
     player.x = 48;
