@@ -11,6 +11,7 @@ int main(void);
 /* Game Data */
 rectangle player;
 ball myball;
+rectangle bricks[1];
 
 /* Game Procedures */
 
@@ -18,17 +19,29 @@ void initGame() {
     consoleLogStr("Init Game\n");
     startStopwatch();
     
+    // Draw background
     fillScreen(CIAN);
+    
+    // Init and Draw bricks
+    bricks[0].x = 0;
+    bricks[0].y = 0;
+    bricks[0].width = 15;
+    bricks[0].height = 4;
+    bricks[0].color = MYSTIC_RED;
+    drawRect(bricks);
+    
+    // Init and Draw player
     player.x = 48;
     player.y = 122;
     player.width = 32;
     player.height = 4;
-	player.color = MYSTIC_RED;
+	player.color = RED;
     drawRect(&player);
     
+    // Init and draw ball
     myball.color = GREEN;
     initBall();
-    drawBall(&myball);    
+    drawBall(&myball); 
     
     stopStopwatch();
 }
