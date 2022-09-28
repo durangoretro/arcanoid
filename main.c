@@ -10,6 +10,7 @@ void updatePlayer(void);
 void initBall(void);
 void initPlayer(void);
 void initBricks(void);
+void initScore(void);
 void resetBall(void);
 int main(void);
 
@@ -26,6 +27,9 @@ void initGame() {
     
     // Draw background
     fillScreen(CIAN);
+
+	// Init and Draw score
+	initScore();
     
     // Init and Draw bricks
     initBricks();
@@ -64,9 +68,9 @@ void initPlayer() {
 void initBricks() {
 	byte i, j, k, lastx, lasty;
 	k = 0;
-	lasty = 0;
+	lasty = 6;
 	// Even rows
-    for(j=0; j<BRICKS_ROWS; j+=2) {
+    for(j=0; j<BRICKS_ROWS/2; j++) {
         lastx = 0;    
         for(i=0; i<BRICKS_PER_ROW; i++) {
             bricks[k].x = lastx;
@@ -79,39 +83,51 @@ void initBricks() {
 			k++;
         }
         lasty = lasty + 12;
-        consoleLogStr("Lastx\n");
-        consoleLogDecimal(lastx);
     }
 	// Odd rows
-	lasty = 6;
-	lastx = 0;
-	bricks[k].x = lastx;
-    lastx = lastx + 8;
-    bricks[k].y = lasty;
-    bricks[k].width = 6;
-    bricks[k].height = 4;
-    bricks[k].color = MYSTIC_RED;
-    drawRect(&bricks[k]);
-	k++;
-	for(i=0; i<BRICKS_PER_ROW-1; i++) {
+	lasty = 12;	
+	for(j=0; j<BRICKS_ROWS/2; j++) {
+		lastx = 0;
+		// Draw first brick
 		bricks[k].x = lastx;
-		lastx = lastx + 16;
+		lastx = lastx + 8;
 		bricks[k].y = lasty;
-		bricks[k].width = 14;
+		bricks[k].width = 6;
 		bricks[k].height = 4;
 		bricks[k].color = MYSTIC_RED;
 		drawRect(&bricks[k]);
 		k++;
+		for(i=0; i<BRICKS_PER_ROW-1; i++) {
+			bricks[k].x = lastx;
+			lastx = lastx + 16;
+			bricks[k].y = lasty;
+			bricks[k].width = 14;
+			bricks[k].height = 4;
+			bricks[k].color = MYSTIC_RED;
+			drawRect(&bricks[k]);
+			k++;
+		}
+		// Draw last brick
+		bricks[k].x = lastx;
+		lastx = lastx + 8;
+		bricks[k].y = lasty;
+		bricks[k].width = 6;
+		bricks[k].height = 4;
+		bricks[k].color = MYSTIC_RED;
+		drawRect(&bricks[k]);
+		k++;
+		lasty = lasty + 12;
 	}
-	bricks[k].x = lastx;
-    lastx = lastx + 8;
-    bricks[k].y = lasty;
-    bricks[k].width = 6;
-    bricks[k].height = 4;
-    bricks[k].color = MYSTIC_RED;
-    drawRect(&bricks[k]);
-	k++;
-	
+}
+
+void initScore() {
+	rectangle score;
+	score.x = 0;
+	score.y = 0;
+	score.width = 128;
+	score.height = 6;
+	score.color = BLACK;
+	drawRect(&score);
 }
 
 void updateGame() {
@@ -138,7 +154,7 @@ void updateBall() {
     byte old_vx;
     
     // Top collision
-    if(myball.y==0) {
+    if(myball.y==6) {
         myball.vy = 4;
     }
     // Bottom collision
