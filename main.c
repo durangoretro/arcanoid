@@ -1,6 +1,6 @@
 #include "dlib.h"
 #define BRICKS_PER_ROW 8
-#define BRICKS_ROWS 2
+#define BRICKS_ROWS 4
 
 /* Procedure definitions */
 void initGame(void);
@@ -62,23 +62,56 @@ void initPlayer() {
 }
 
 void initBricks() {
-	byte i, j, lastx, lasty;
+	byte i, j, k, lastx, lasty;
+	k = 0;
 	lasty = 0;
-    for(j=0; j<BRICKS_ROWS; j++) {
+	// Even rows
+    for(j=0; j<BRICKS_ROWS; j+=2) {
         lastx = 0;    
         for(i=0; i<BRICKS_PER_ROW; i++) {
-            bricks[i].x = lastx;
+            bricks[k].x = lastx;
             lastx = lastx + 16;
-            bricks[i].y = lasty;
-            bricks[i].width = 14;
-            bricks[i].height = 4;
-            bricks[i].color = MYSTIC_RED;
-            drawRect(&bricks[i]);
+            bricks[k].y = lasty;
+            bricks[k].width = 14;
+            bricks[k].height = 4;
+            bricks[k].color = MYSTIC_RED;
+            drawRect(&bricks[k]);
+			k++;
         }
-        lasty = lasty + 6;
+        lasty = lasty + 12;
         consoleLogStr("Lastx\n");
         consoleLogDecimal(lastx);
     }
+	// Odd rows
+	lasty = 6;
+	lastx = 0;
+	bricks[k].x = lastx;
+    lastx = lastx + 8;
+    bricks[k].y = lasty;
+    bricks[k].width = 6;
+    bricks[k].height = 4;
+    bricks[k].color = MYSTIC_RED;
+    drawRect(&bricks[k]);
+	k++;
+	for(i=0; i<BRICKS_PER_ROW-1; i++) {
+		bricks[k].x = lastx;
+		lastx = lastx + 16;
+		bricks[k].y = lasty;
+		bricks[k].width = 14;
+		bricks[k].height = 4;
+		bricks[k].color = MYSTIC_RED;
+		drawRect(&bricks[k]);
+		k++;
+	}
+	bricks[k].x = lastx;
+    lastx = lastx + 8;
+    bricks[k].y = lasty;
+    bricks[k].width = 6;
+    bricks[k].height = 4;
+    bricks[k].color = MYSTIC_RED;
+    drawRect(&bricks[k]);
+	k++;
+	
 }
 
 void updateGame() {
