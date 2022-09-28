@@ -1,5 +1,6 @@
 #include "dlib.h"
-#define BRICKS_NUMBER 3
+#define BRICKS_PER_ROW 8
+#define BRICKS_ROWS 2
 
 /* Procedure definitions */
 void initGame(void);
@@ -12,12 +13,12 @@ int main(void);
 /* Game Data */
 rectangle player;
 ball myball;
-rectangle bricks[BRICKS_NUMBER];
+rectangle bricks[BRICKS_PER_ROW*BRICKS_ROWS];
 
 /* Game Procedures */
 
 void initGame() {
-    byte i, last;
+    byte i, j, lastx, lasty;
     consoleLogStr("Init Game\n");
     startStopwatch();
     
@@ -25,15 +26,21 @@ void initGame() {
     fillScreen(CIAN);
     
     // Init and Draw bricks
-    last = 0;
-    for(i=0; i<BRICKS_NUMBER; i++) {
-        bricks[i].x = last;
-        last = last + 16;
-        bricks[i].y = 0;
-        bricks[i].width = 14;
-        bricks[i].height = 4;
-        bricks[i].color = MYSTIC_RED;
-        drawRect(&bricks[i]);
+    lasty = 0;
+    for(j=0; j<BRICKS_ROWS; j++) {
+        lastx = 0;    
+        for(i=0; i<BRICKS_PER_ROW; i++) {
+            bricks[i].x = lastx;
+            lastx = lastx + 16;
+            bricks[i].y = lasty;
+            bricks[i].width = 14;
+            bricks[i].height = 4;
+            bricks[i].color = MYSTIC_RED;
+            drawRect(&bricks[i]);
+        }
+        lasty = lasty + 6;
+        consoleLogStr("Lastx\n");
+        consoleLogDecimal(lastx);
     }
     
     // Init and Draw player
@@ -60,7 +67,7 @@ void initBall() {
 }
 
 void updateGame() {
-    updateBall();
+    //updateBall();
     updatePlayer();
 }
 
