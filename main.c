@@ -33,7 +33,7 @@ void initGame() {
 
     // Init and Draw bricks
     initBricks();
-halt();
+
     // Init and Draw player
     initPlayer();
     
@@ -61,7 +61,7 @@ void initPlayer() {
     player.y = 122;
     player.width = 32;
     player.height = 4;
-	player.color = RED;
+	player.color = GREEN;
     drawRect(&player);
 }
 
@@ -83,6 +83,8 @@ void initDrawEvenRow(byte y, byte index) {
 
 void initDrawOddRow(byte y, byte index) {
     byte lastx, k, i;    
+    consoleLogStr("\nY\n");
+    consoleLogDecimal(y);
     lastx = 0;
     k = index;
     // Draw first brick
@@ -94,7 +96,8 @@ void initDrawOddRow(byte y, byte index) {
     bricks[k].color = MYSTIC_RED;
     drawRect(&bricks[k]);
     k++;
-    for(i=0; i<9; i++) {
+
+    for(i=0; i<7; i++) {
         bricks[k].x = lastx;
         lastx = lastx + 16;
         bricks[k].y = y;
@@ -104,14 +107,18 @@ void initDrawOddRow(byte y, byte index) {
         drawRect(&bricks[k]);
         k++;
     }
+        
     // Draw last brick
     bricks[k].x = lastx;
-    lastx = lastx + 8;
     bricks[k].y = y;
     bricks[k].width = 6;
     bricks[k].height = 4;
     bricks[k].color = MYSTIC_RED;
+    consoleLogStr("\nBrick\n");
+    consoleLogDecimal(bricks[k].x);
+    consoleLogDecimal(bricks[k].y);
     consoleLogDecimal(bricks[k].width);
+    consoleLogDecimal(bricks[k].height);
     drawRect(&bricks[k]);
 }
 
@@ -122,7 +129,7 @@ void initBricks() {
 	
     for(i=0; i<2; i++) {
         // Even rows
-        //initDrawEvenRow(lasty, k);
+        initDrawEvenRow(lasty, k);
         k = k + 8;
         lasty = lasty + 6;
         // Odd rows
