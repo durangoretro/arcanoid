@@ -1,11 +1,16 @@
 ; System procedures
 .export _waitVSync
 .export _readGamepad
+.export _waitStart
+.export _waitFrames
+.export _halt
 ; Draw procedures
 .export _fillScreen
 .export _drawRect
 .export _drawBall
 .export _moveBall
+.export _moveRight
+.export _moveLeft
 ; Debug procedures
 .export _consoleLogHex
 .export _consoleLogWord
@@ -15,10 +20,7 @@
 .export _consoleLogStr
 .export _startStopwatch
 .export _stopStopwatch
-.export _moveRight
-.export _moveLeft
-.export _waitStart
-.export _waitFrames
+
 
 .zeropage
 VMEM_POINTER: .res 2, $00
@@ -76,6 +78,11 @@ TEMP2: .res 1, $00
     TAX
     LDA $02, X
     RTS
+.endproc
+
+; Stop
+.proc _halt: near
+    STP
 .endproc
 
 ; ---- DRAW PROCEDURES ---
@@ -480,3 +487,5 @@ loop:
     STA $DF94
     RTS
 .endproc
+
+
