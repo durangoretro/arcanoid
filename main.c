@@ -17,7 +17,7 @@ int main(void);
 /* Game Data */
 rectangle player;
 ball myball;
-rectangle bricks[BRICKS_PER_ROW*BRICKS_ROWS];
+rectangle bricks[BRICKS_ROWS/2*BRICKS_PER_ROW + BRICKS_ROWS/2*(BRICKS_PER_ROW+1)];
 
 /* Game Procedures */
 
