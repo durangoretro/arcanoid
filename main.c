@@ -52,8 +52,8 @@ void initBall() {
 void resetBall() {
     myball.x = 62;
     myball.y = 60;
-    myball.vx=2;
-    myball.vy=-4;
+    myball.vx=1;
+    myball.vy=-2;
 }
 
 void initPlayer() {
@@ -150,7 +150,7 @@ void initScore() {
 }
 
 void updateGame() {
-    //updateBall();
+    updateBall();
     updatePlayer();
 }
 
@@ -174,13 +174,13 @@ void updateBall() {
     
     // Top collision
     if(myball.y==6) {
-        myball.vy = 4;
+        myball.vy = 2;
     }
     // Bottom collision
     if(myball.y==120) {
         // Paddle collision
         if(myball.x >= player.x && myball.x<=player.x+player.width) {
-            myball.vy = -4;
+            myball.vy = -2;
         }
         // Fail
         else {
@@ -194,11 +194,11 @@ void updateBall() {
     }
     // Right collision
     if(myball.x==128) {
-        myball.vx = -2;
+        myball.vx = -1;
     }
     // Left collision
     if(myball.x==0) {
-        myball.vx = 2;
+        myball.vx = 1;
     }
     
     // Update ball position
