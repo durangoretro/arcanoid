@@ -15,6 +15,21 @@
 ; Enable 65C02 instruction set
 .PC02
 
+; ---------------------------------------------------------------------------
+; DURANGO HARDWARE CONSTANTS
+; ---------------------------------------------------------------------------
+VIDEO_MODE = $df80
+INT_ENABLE = $DFA0
+GAMEPAD1 = $df9c
+GAMEPAD2 = $df9d
+
+; ---------------------------------------------------------------------------
+; DURANGO CRT0 CONSTANTS
+; ---------------------------------------------------------------------------
+GAMEPAD_MODE1 = $00
+GAMEPAD_MODE2 = $01
+GAMEPAD_VALUE1 = $02
+GAMEPAD_VALUE2 = $03
 
 ; ---------------------------------------------------------------------------
 ; SEGMENT STARTUP
@@ -47,24 +62,24 @@ _init:
 
     ; Initialize Durango Video
     LDA #$3c
-    STA $df80
+    STA VIDEO_MODE
 
     ; Enable Durango interrupts
     LDA #$01
-    STA $DFA0
+    STA INT_ENABLE
     CLI
 
     ; Init gamepads
-    STA $df9c
+    STA GAMEPAD1
     LDX #8
     loop:
-    STA $df9d
+    STA GAMEPAD2
     DEX
     BNE loop
-    LDA $df9c
-    LDX $df9d
-    STA $00
-    STX $01
+    LDA GAMEPAD1
+    LDX GAMEPAD2
+    STA GAMEPAD_MODE1
+    STX GAMEPAD_MODE2
     
     ; Call main()
     JSR _main
@@ -94,18 +109,18 @@ _irq_int:
     AND #$10
     BNE _stop
     ; Read controllers
-    STA $df9c
+    STA GAMEPAD1
     LDX #8
     loop2:
-    STA $df9d
+    STA GAMEPAD2
     DEX
     BNE loop2
-    LDA $df9c
-    EOR $00
-    STA $02
-    LDA $df9d
-    EOR $01
-    STA $03       
+    LDA GAMEPAD1
+    EOR GAMEPAD_MODE1
+    STA GAMEPAD_VALUE1
+    LDA GAMEPAD2
+    EOR GAMEPAD_MODE2
+    STA GAMEPAD_VALUE2
     ; Restore registers and return
     PLX
     PLA
