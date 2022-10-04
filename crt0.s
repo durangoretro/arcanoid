@@ -42,6 +42,10 @@ GAMEPAD_VALUE2 = $03
 _init:
     ; Disable interrupts
     SEI
+    
+    ; Clean video mode
+    LDA #$30
+    STA VIDEO_MODE
 
     ; Clean up RAM
     LDA #$00
@@ -142,7 +146,6 @@ _nmi_int:
     
     LDA VIDEO_MODE
     AND #$30
-    STA $DF93
     CMP #$30
     BEQ case_0
     CMP #$00
