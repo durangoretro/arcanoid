@@ -108,9 +108,9 @@ _exit:
     JSR donelib
 
 ; Stop
-.proc _stop: near
+_stop:
     STP
-.endproc
+
 
 ; Maskable interrupt (IRQ) service routine
 _irq_int:  
