@@ -18,6 +18,7 @@
 ; ---------------------------------------------------------------------------
 ; DURANGO HARDWARE CONSTANTS
 ; ---------------------------------------------------------------------------
+; [HiRes Invert S1 S0    RGB LED NC NC]
 VIDEO_MODE = $df80
 INT_ENABLE = $DFA0
 GAMEPAD1 = $df9c
@@ -61,7 +62,7 @@ _init:
     JSR initlib
 
     ; Initialize Durango Video
-    LDA #$3c
+    LDA #$3C
     STA VIDEO_MODE
 
     ; Enable Durango interrupts
@@ -123,7 +124,39 @@ _irq_int:
 
 ; Non-maskable interrupt (NMI) service routine
 _nmi_int:
-    ; Return from all NMI interrupts
+    PHA
+    PHX
+    
+    LDA VIDEO_MODE
+    AND #$30
+    STA $DF93
+    CMP #$30
+    BEQ case_0
+    CMP #$00
+    BEQ case_1
+    CMP #$10
+    BEQ case_2
+    CMP #$20
+    BEQ case_3
+    
+    case_0:
+    LDX #$88
+    BRA case_end
+    case_1:
+    LDX #$98
+    BRA case_end
+    case_2:
+    LDX #$A8
+    BRA case_end
+    case_3:
+    LDX #$3C
+    BRA case_end
+    
+    case_end:
+    STX VIDEO_MODE
+    
+    PLX
+    PLA
     RTI
 
 ; ---------------------------------------------------------------------------
