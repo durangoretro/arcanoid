@@ -43,6 +43,19 @@ _init:
     ; Disable interrupts
     SEI
 
+    ; Clean up RAM
+    LDA #$00
+    LDX #$02
+    STX $01
+    LDY #$00
+    STY $00
+    loopcm:
+    STA ($00), Y
+    INY
+    BNE loopcm
+	INC $01
+    BPL loopcm
+
     ; Initialize stack pointer to $01FF
     LDX #$FF
     TXS
