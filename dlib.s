@@ -21,6 +21,18 @@
 .export _startStopwatch
 .export _stopStopwatch
 
+; Durango HW constants
+SYNC = $DF88
+VSP = $df93
+VSP_CONFIG = $df94
+
+; Debug modes
+DEBUG_HEX = $00
+DEBUG_CHAR = $01
+DEBUG_BINARY = $02
+DEBUG_DECIMAL = $03
+STOPWATCH_START = $FB
+STOPWATCH_STOP = $FC
 
 .zeropage
 VMEM_POINTER: .res 2, $00
@@ -39,11 +51,11 @@ TEMP2: .res 1, $00
 .proc _waitVSync: near
     ; Wait for vsync end.
     loop1:
-    BIT $DF88
+    BIT SYNC
     BVS loop1
     ; Wait for vsync start
     loop2:
-    BIT $DF88
+    BIT SYNC
     BVC loop2
     RTS
 .endproc
@@ -64,10 +76,10 @@ TEMP2: .res 1, $00
 .proc _waitFrames: near
     TAX
     wait_vsync_end:
-    BIT $DF88
+    BIT SYNC
     BVS wait_vsync_end
     wait_vsync_begin:
-    BIT $DF88
+    BIT SYNC
     BVC wait_vsync_begin   
     DEX
     BNE wait_vsync_end
@@ -413,47 +425,47 @@ loop:
 
 .proc  _consoleLogHex: near
     ; Set virtual serial port in hex mode
-    LDX #$00
-	STX $df94
+    LDX #DEBUG_HEX
+	STX VSP_CONFIG
     ; Send value to virtual serial port
-    STA $df93
+    STA VSP
     RTS
 .endproc
 
 .proc  _consoleLogWord: near
     ; Set virtual serial port in hex mode
-    LDY #$00
-	STY $df94
+    LDY #DEBUG_HEX
+	STY VSP_CONFIG
     ; Send value to virtual serial port
-    STA $df93
-    STX $df93
+    STA VSP
+    STX VSP
     RTS
 .endproc
 
 .proc  _consoleLogBinary: near
     ; Set virtual serial port in hex mode
-    LDX #$02
-	STX $df94
+    LDX #DEBUG_BINARY
+	STX VSP_CONFIG
     ; Send value to virtual serial port
-    STA $df93
+    STA VSP
     RTS
 .endproc
 
 .proc  _consoleLogDecimal: near
     ; Set virtual serial port in hex mode
-    LDX #$03
-	STX $df94
+    LDX #DEBUG_DECIMAL
+	STX VSP_CONFIG
     ; Send value to virtual serial port
-    STA $df93
+    STA VSP
     RTS
 .endproc
 
 .proc  _consoleLogChar: near
     ; Set virtual serial port in ascii mode
-    LDX #$01
-    STX $df94
+    LDX #DEBUG_CHAR
+    STX VSP_CONFIG
     ; Send value to virtual serial port
-    STA $df93
+    STA VSP
     RTS
 .endproc
 
@@ -462,14 +474,14 @@ loop:
     STA DATA_POINTER
     STX DATA_POINTER+1
     ; Set virtual serial port in ascii mode
-    LDA #$01
-    STA $df94
+    LDA #DEBUG_CHAR
+    STA VSP_CONFIG
     ; Iterator
     LDY #$00
     loop:
     LDA (DATA_POINTER),Y
     BEQ end
-    STA $df93
+    STA VSP
     INY
     BNE loop
     end:
@@ -477,14 +489,14 @@ loop:
 .endproc
 
 .proc _startStopwatch: near
-    LDA #$FB
-    STA $DF94
+    LDA #STOPWATCH_START
+    STA VSP_CONFIG
     RTS
 .endproc
 
 .proc _stopStopwatch: near
-    LDA #$FC
-    STA $DF94
+    LDA #STOPWATCH_STOP
+    STA VSP_CONFIG
     RTS
 .endproc
 
