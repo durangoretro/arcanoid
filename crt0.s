@@ -94,11 +94,6 @@ _exit:
     STP
 .endproc
 
-; Non-maskable interrupt (NMI) service routine
-_nmi_int:
-    ; Return from all NMI interrupts
-    RTI
-
 ; Maskable interrupt (IRQ) service routine
 _irq_int:  
     ; Save registres and filter BRK
@@ -125,6 +120,11 @@ _irq_int:
     PLX
     PLA
     RTI 
+
+; Non-maskable interrupt (NMI) service routine
+_nmi_int:
+    ; Return from all NMI interrupts
+    RTI
 
 ; ---------------------------------------------------------------------------
 ; SEGMENT VECTTORS
