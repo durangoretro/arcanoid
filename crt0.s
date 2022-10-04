@@ -45,9 +45,9 @@ _init:
 
     ; Clean up RAM
     LDA #$00
-    LDX #$02
+    LDX #$00
     STX $01
-    LDY #$00
+    LDY #$02
     STY $00
     loopcm:
     STA ($00), Y
