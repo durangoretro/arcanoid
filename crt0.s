@@ -206,6 +206,6 @@ _nmi_int:
 ; SEGMENT HEADER
 ; ---------------------------------------------------------------------------
 .segment "HEADER"
-.byt "DURANGO         "
+.byt "DURANGO CA65v0.1"
 .byt "                "
 .byt "                "
