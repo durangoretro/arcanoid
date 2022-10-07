@@ -24,8 +24,8 @@ $(BUILD_DIR)/:
 	mkdir -p $(BUILD_DIR)
 
 	
-arkanoid.bin: $(BUILD_DIR)/ $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.lib $(DCLIB)/durango.lib $(DCLIB)/psv.lib
-	ld65 -C durango16k.cfg $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.lib $(DCLIB)/durango.lib $(DCLIB)/psv.lib -o arkanoid.bin	
+arkanoid.bin: $(BUILD_DIR)/ $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.lib $(DCLIB)/durango.lib $(DCLIB)/psv.lib $(DCLIB)/system.lib
+	ld65 -C durango16k.cfg $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.lib $(DCLIB)/durango.lib $(DCLIB)/psv.lib $(DCLIB)/system.lib -o arkanoid.bin	
 
 clean:
 	rm -Rf $(BUILD_DIR) arkanoid.bin

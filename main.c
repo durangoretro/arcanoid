@@ -1,5 +1,6 @@
 #include "dlib.h"
 #include "../dclib/inc/psv.h"
+#include "../dclib/inc/system.h"
 
 /* Procedure definitions */
 void initGame(void);

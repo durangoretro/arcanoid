@@ -48,12 +48,7 @@ typedef struct{
     byte vx, vy;
 } ball;
 
-/* System procedures */
-extern void __fastcall__ waitVSync(void);
-extern void __fastcall__ waitStart(void);
-extern void __fastcall__ waitFrames(byte);
-extern byte __fastcall__ readGamepad(byte);
-extern void __fastcall__ halt(void);
+
 
 /* Draw procedures */
 extern void __fastcall__ fillScreen(byte color);
