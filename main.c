@@ -14,6 +14,7 @@ void initScore(void);
 void resetBall(void);
 void initDrawEvenRow(byte y, byte index);
 void initDrawOddRow(byte y, byte index);
+void checkBottomCols(void);
 int main(void);
 
 /* Game Data */
@@ -124,6 +125,8 @@ void initDrawOddRow(byte y, byte index) {
     drawRect(&bricks[k]);
 }
 
+
+
 void initBricks() {
 	byte i, k, lasty;
 	k = 0;
@@ -154,6 +157,7 @@ void initScore() {
 void updateGame() {
     updateBall();
     updatePlayer();
+    checkBottomCols();
 }
 
 void updatePlayer() {
@@ -208,6 +212,17 @@ void updateBall() {
     myball.y = myball.y+myball.vy;
     // Move ball in screen
     moveBall(&myball);
+}
+
+void checkBottomCols(void) {
+    unsigned char i = 0, bally=0;
+    
+    bally=myball.y-4;
+    for(i=0; i<34; i++) {
+        if(bricks[i].y==bally) {
+            myball.vy = 2;
+        }
+    }
 }
 
 int main(void){
