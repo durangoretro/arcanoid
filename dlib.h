@@ -42,6 +42,14 @@ typedef struct{
 } rectangle;
 
 typedef struct{
+    byte x, y;
+    word mem;
+    byte color;
+    byte width, height;
+    byte enabled;
+} brick;
+
+typedef struct{
     byte x,y;
     word mem;
     byte color;
