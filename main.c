@@ -20,7 +20,7 @@ int main(void);
 /* Game Data */
 rectangle player;
 ball myball;
-rectangle bricks[34];
+brick bricks[34];
 
 /* Game Procedures */
 
@@ -73,6 +73,7 @@ void initDrawEvenRow(byte y, byte index) {
     lastx = 0;
     k = index;
     for(i=0; i<8; i++) {
+        bricks[k].enabled = 1;
         bricks[k].x = lastx;
         lastx = lastx + 16;
         bricks[k].y = y;
@@ -91,6 +92,7 @@ void initDrawOddRow(byte y, byte index) {
     lastx = 0;
     k = index;
     // Draw first brick
+    bricks[k].enabled = 1;
     bricks[k].x = lastx;
     lastx = lastx + 8;
     bricks[k].y = y;
@@ -101,6 +103,7 @@ void initDrawOddRow(byte y, byte index) {
     k++;
 
     for(i=0; i<7; i++) {
+        bricks[k].enabled = 1;
         bricks[k].x = lastx;
         lastx = lastx + 16;
         bricks[k].y = y;
@@ -112,6 +115,7 @@ void initDrawOddRow(byte y, byte index) {
     }
         
     // Draw last brick
+    bricks[k].enabled = 1;
     bricks[k].x = lastx;
     bricks[k].y = y;
     bricks[k].width = 6;
@@ -215,12 +219,18 @@ void updateBall() {
 }
 
 void checkBottomCols(void) {
-    unsigned char i = 0, bally=0;
+    unsigned char i = 0, bally=0, ballx=0;
     
     bally=myball.y-4;
+    ballx=myball.x-6;
     for(i=0; i<34; i++) {
-        if(bricks[i].y==bally) {
+        if(bricks[i].enabled == 1 && bricks[i].y==bally ) {
+            //&& myball.x>bricks[i].x && ballx<bricks[i].x) {
             myball.vy = 2;
+            //bricks[i].enabled = 0;
+            //bricks[i].color=CIAN;
+            bricks[i].color=YELLOW;
+            drawRect(&bricks[i]);
         }
     }
 }
