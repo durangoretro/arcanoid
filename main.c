@@ -222,14 +222,13 @@ void checkBottomCols(void) {
     unsigned char i = 0, bally=0, ballx=0;
     
     bally=myball.y-4;
-    ballx=myball.x-6;
+    ballx=myball.x-12;
     for(i=0; i<34; i++) {
-        if(bricks[i].enabled == 1 && bricks[i].y==bally ) {
-            //&& myball.x>bricks[i].x && ballx<bricks[i].x) {
+        if(bricks[i].enabled == 1 && bricks[i].y==bally
+            && myball.x>bricks[i].x && ballx<bricks[i].x) {
             myball.vy = 2;
-            //bricks[i].enabled = 0;
-            //bricks[i].color=CIAN;
-            bricks[i].color=YELLOW;
+            bricks[i].enabled = 0;
+            bricks[i].color=CIAN;
             drawRect(&bricks[i]);
         }
     }
