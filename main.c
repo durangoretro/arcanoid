@@ -14,9 +14,7 @@ void initScore(void);
 void resetBall(void);
 void initDrawEvenRow(byte y, byte index);
 void initDrawOddRow(byte y, byte index);
-void checkBottomCols(void);
-void checkLeftCols(void);
-void checkRightCols(void);
+void checkBrickCols(void);
 int main(void);
 
 /* Game Data */
@@ -163,9 +161,7 @@ void initScore() {
 void updateGame() {
     updateBall();
     updatePlayer();
-    checkBottomCols();
-    checkLeftCols();
-    checkRightCols();
+    checkBrickCols();
 }
 
 void updatePlayer() {
@@ -222,45 +218,16 @@ void updateBall() {
     moveBall(&myball);
 }
 
-void checkBottomCols(void) {
-    unsigned char i = 0, bally=0, ballx=0;
-    
-    bally=myball.y-4;
+void checkBrickCols(void) {
+    unsigned char i = 0, bally=0, ballx=0, bally0=0, ballx0=0;
+    ballx0=myball.x+1;
+    bally0=myball.y+1;
     ballx=myball.x-12;
+    bally=myball.y-4;    
     for(i=0; i<34; i++) {
-        if(bricks[i].enabled == 1 && bricks[i].y==bally
-            && myball.x>bricks[i].x && ballx<bricks[i].x) {
-            myball.vy = 2;
-            bricks[i].enabled = 0;
-            bricks[i].color=CIAN;
-            drawRect(&bricks[i]);
-        }
-    }
-}
-
-void checkLeftCols(void) {
-    unsigned char i = 0, bally=0, ballx=0;
-    
-    bally=myball.y-4;
-    for(i=0; i<34; i++) {
-        if(bricks[i].enabled == 1 && myball.x == bricks[i].x
-            && myball.y>bricks[i].y && bally<bricks[i].y) {
-            myball.vx = -1;
-            bricks[i].enabled = 0;
-            bricks[i].color=CIAN;
-            drawRect(&bricks[i]);
-        }
-    }
-}
-
-void checkRightCols(void) {
-    unsigned char i = 0, bally=0, ballx=0;
-    ballx=myball.x+12;
-    bally=myball.y-4;
-    for(i=0; i<34; i++) {
-        if(bricks[i].enabled == 1 && ballx == bricks[i].x
-            && myball.y>bricks[i].y && bally<bricks[i].y) {
-            myball.vx = -1;
+        if(bricks[i].enabled == 1 
+            && ballx0>=bricks[i].x && ballx<=bricks[i].x
+            && bally0>=bricks[i].y && bally<=bricks[i].y) {
             bricks[i].enabled = 0;
             bricks[i].color=CIAN;
             drawRect(&bricks[i]);
