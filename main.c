@@ -16,6 +16,7 @@ void initDrawEvenRow(byte y, byte index);
 void initDrawOddRow(byte y, byte index);
 void checkBottomCols(void);
 void checkLeftCols(void);
+void checkRightCols(void);
 int main(void);
 
 /* Game Data */
@@ -164,6 +165,7 @@ void updateGame() {
     updatePlayer();
     checkBottomCols();
     checkLeftCols();
+    checkRightCols();
 }
 
 void updatePlayer() {
@@ -251,6 +253,21 @@ void checkLeftCols(void) {
     }
 }
 
+void checkRightCols(void) {
+    unsigned char i = 0, bally=0, ballx=0;
+    ballx=myball.x+12;
+    bally=myball.y-4;
+    for(i=0; i<34; i++) {
+        if(bricks[i].enabled == 1 && ballx == bricks[i].x
+            && myball.y>bricks[i].y && bally<bricks[i].y) {
+            myball.vx = -1;
+            bricks[i].enabled = 0;
+            bricks[i].color=CIAN;
+            drawRect(&bricks[i]);
+        }
+    }
+}
+
 int main(void){
     // Init game
     initGame();
@@ -262,7 +279,7 @@ int main(void){
         //waitFrames(20);
         
         // Wait VSYNC
-        waitVSync();                
+        waitVSync();
         // Start counting time
         startStopwatch();
         
