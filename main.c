@@ -15,6 +15,7 @@ void resetBall(void);
 void initDrawEvenRow(byte y, byte index);
 void initDrawOddRow(byte y, byte index);
 void checkBottomCols(void);
+void checkLeftCols(void);
 int main(void);
 
 /* Game Data */
@@ -162,6 +163,7 @@ void updateGame() {
     updateBall();
     updatePlayer();
     checkBottomCols();
+    checkLeftCols();
 }
 
 void updatePlayer() {
@@ -227,6 +229,21 @@ void checkBottomCols(void) {
         if(bricks[i].enabled == 1 && bricks[i].y==bally
             && myball.x>bricks[i].x && ballx<bricks[i].x) {
             myball.vy = 2;
+            bricks[i].enabled = 0;
+            bricks[i].color=CIAN;
+            drawRect(&bricks[i]);
+        }
+    }
+}
+
+void checkLeftCols(void) {
+    unsigned char i = 0, bally=0, ballx=0;
+    
+    bally=myball.y-4;
+    for(i=0; i<34; i++) {
+        if(bricks[i].enabled == 1 && myball.x == bricks[i].x
+            && myball.y>bricks[i].y && bally<bricks[i].y) {
+            myball.vx = -1;
             bricks[i].enabled = 0;
             bricks[i].color=CIAN;
             drawRect(&bricks[i]);
