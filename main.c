@@ -164,8 +164,8 @@ void updateGame() {
     updateBall();
     updatePlayer();
     checkBottomCols();
-    checkLeftCols();
-    checkRightCols();
+    //checkLeftCols();
+    //checkRightCols();
 }
 
 void updatePlayer() {
@@ -223,13 +223,12 @@ void updateBall() {
 }
 
 void checkBottomCols(void) {
-    unsigned char i = 0, bally=0, ballx=0;
+    unsigned char i, brickx;
     
-    bally=myball.y-4;
-    ballx=myball.x-12;
     for(i=0; i<34; i++) {
-        if(bricks[i].enabled == 1 && bricks[i].y==bally
-            && myball.x>bricks[i].x && ballx<bricks[i].x) {
+        brickx=bricks[i].x+12;
+        if(bricks[i].enabled == 1 && bricks[i].y==myball.y
+            && myball.x>bricks[i].x && myball.x<brickx) {
             myball.vy = 2;
             bricks[i].enabled = 0;
             bricks[i].color=CIAN;
