@@ -219,15 +219,13 @@ void updateBall() {
 }
 
 void checkBrickCols(void) {
-    unsigned char i = 0, bally=0, ballx=0, bally0=0, ballx0=0;
-    ballx0=myball.x+1;
-    bally0=myball.y+1;
-    ballx=myball.x-12;
-    bally=myball.y-4;    
+    unsigned char i, brickx, bricky;
     for(i=0; i<34; i++) {
+        brickx=bricks[i].x+12;
+        bricky=bricks[i].y+12;
         if(bricks[i].enabled == 1 
-            && ballx0>=bricks[i].x && ballx<=bricks[i].x
-            && bally0>=bricks[i].y && bally<=bricks[i].y) {
+            && myball.x>=bricks[i].x && myball.x<=brickx
+            && myball.y>=bricks[i].y && myball.y<=bricky) {
             bricks[i].enabled = 0;
             bricks[i].color=CIAN;
             drawRect(&bricks[i]);
