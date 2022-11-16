@@ -223,16 +223,24 @@ void updateBall() {
 }
 
 void checkBottomCols(void) {
-    unsigned char i, brickx;
+    unsigned char i, brickx, bricky;
     
     for(i=0; i<34; i++) {
         brickx=bricks[i].x+12;
-        if(bricks[i].enabled == 1 && bricks[i].y==myball.y
-            && myball.x>bricks[i].x && myball.x<brickx) {
-            myball.vy = 2;
-            bricks[i].enabled = 0;
-            bricks[i].color=CIAN;
-            drawRect(&bricks[i]);
+        bricky=bricks[i].y+4;
+        if(bricks[i].enabled == 1 && myball.x>bricks[i].x && myball.x<brickx) { 
+            if(bricks[i].y==myball.y) {
+                myball.vy = 2;
+                bricks[i].enabled = 0;
+                bricks[i].color=CIAN;
+                drawRect(&bricks[i]);
+            }
+            if(bricky==myball.y) {
+                myball.vy = -2;
+                bricks[i].enabled = 0;
+                bricks[i].color=CIAN;
+                drawRect(&bricks[i]);
+            }
         }
     }
 }
