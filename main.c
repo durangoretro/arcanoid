@@ -14,7 +14,8 @@ void initScore(void);
 void resetBall(void);
 void initDrawEvenRow(byte y, byte index);
 void initDrawOddRow(byte y, byte index);
-void checkBottomCols(void);
+void check_collisions(void);
+void checkBottomCols(unsigned char i);
 void checkLeftCols(void);
 void checkRightCols(void);
 int main(void);
@@ -169,7 +170,7 @@ void initScore() {
 void updateGame() {
     updateBall();
     updatePlayer();
-    checkBottomCols();
+    check_collisions();
     //checkLeftCols();
     //checkRightCols();
 }
@@ -228,21 +229,27 @@ void updateBall() {
     moveBall(&myball);
 }
 
-void checkBottomCols(void) {
-    unsigned char i, brickx;
+void check_collisions(void) {
+    unsigned char i;
     
     i=0;
     do {
-        brickx=bricks[i].x+12;
-        if(bricks[i].enabled == 1 && bricks[i].y==myball.y
-            && myball.x>bricks[i].x && myball.x<brickx) {
-            myball.vy = 2;
-            bricks[i].enabled = 0;
-            bricks[i].color=CIAN;
-            drawRect(&bricks[i]);
-        }
+        checkBottomCols(i);       
         i++;
     } while(i!=34);
+}
+
+void checkBottomCols(unsigned char i) {
+    unsigned char brickx;
+    
+    brickx=bricks[i].x+12;
+    if(bricks[i].enabled == 1 && bricks[i].y==myball.y
+        && myball.x>bricks[i].x && myball.x<brickx) {
+        myball.vy = 2;
+        bricks[i].enabled = 0;
+        bricks[i].color=CIAN;
+        drawRect(&bricks[i]);
+    }        
 }
 
 void checkLeftCols(void) {
