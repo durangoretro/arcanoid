@@ -233,12 +233,14 @@ void updateBall() {
 }
 
 void check_collisions(void) {
+    startStopwatch();
     index=0;
     do {
         checkBottomCols();
-        checkLeftCols();
+        //checkLeftCols();
         index++;
     } while(index!=34);
+    stopStopwatch();
 }
 
 void checkBottomCols() {
@@ -248,7 +250,7 @@ void checkBottomCols() {
     if(bricks[index].enabled == 1 && bricks[index].y==myball.y
         && myball.x>bricks[index].x && myball.x<brickx) {
         myball.vy = 2;
-        bricks[index].enabled = 0;
+        //bricks[index].enabled = 0;
         bricks[index].color=CIAN;
         drawRect(&bricks[index]);
     }        
@@ -287,13 +289,13 @@ int main(void){
         // Wait VSYNC
         waitVSync();
         // Start counting time
-        startStopwatch();
+        //startStopwatch();
         
         // Update game
         updateGame();
         
         // Stop counting time
-        stopStopwatch();        
+        //stopStopwatch();        
     }
     
     return 0;
