@@ -235,7 +235,8 @@ void updateBall() {
 void check_collisions(void) {
     index=0;
     do {
-        checkBottomCols();       
+        checkBottomCols();
+        checkLeftCols();
         index++;
     } while(index!=34);
 }
@@ -253,22 +254,12 @@ void checkBottomCols() {
     }        
 }
 
-void checkLeftCols(void) {
-    unsigned char i = 0, bally=0, ballx=0;
-    
-    bally=myball.y-4;
-    for(i=0; i<34; i++) {
-        if(bricks[i].enabled == 1 && myball.x == bricks[i].x
-            && myball.y>bricks[i].y && bally<bricks[i].y) {
-            myball.vx = -1;
-            bricks[i].enabled = 0;
-            bricks[i].color=CIAN;
-            drawRect(&bricks[i]);
-        }
-    }
+void checkLeftCols() {
+    __asm__ ("lda %v", index);
+    __asm__("sta $df93");
 }
 
-void checkRightCols(void) {
+void checkRightCols() {
     unsigned char i = 0, bally=0, ballx=0;
     ballx=myball.x+12;
     bally=myball.y-4;
