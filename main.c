@@ -106,7 +106,8 @@ void initDrawOddRow(byte y, byte index) {
     drawRect(&bricks[k]);
     k++;
 
-    for(i=0; i<7; i++) {
+    i=0;
+    do {
         bricks[k].enabled = 1;
         bricks[k].x = lastx;
         lastx = lastx + 16;
@@ -116,7 +117,8 @@ void initDrawOddRow(byte y, byte index) {
         bricks[k].color = MYSTIC_RED;
         drawRect(&bricks[k]);
         k++;
-    }
+        i++;
+    } while(i!=7);
         
     // Draw last brick
     bricks[k].enabled = 1;
