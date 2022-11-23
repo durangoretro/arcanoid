@@ -142,7 +142,8 @@ void initBricks() {
 	k = 0;
 	lasty = 6;
 	
-    for(i=0; i<2; i++) {
+    i=0;
+    do {
         // Even rows
         initDrawEvenRow(lasty, k);
         k = k + 8;
@@ -151,7 +152,8 @@ void initBricks() {
         initDrawOddRow(lasty, k);
         k = k + 9;
         lasty = lasty + 6;
-    }	
+        i++;
+    } while(i!=2);
 }
 
 void initScore() {
