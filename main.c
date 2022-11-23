@@ -15,7 +15,7 @@ void resetBall(void);
 void initDrawEvenRow(byte y, byte index);
 void initDrawOddRow(byte y, byte index);
 void check_collisions(void);
-void checkBottomCols(unsigned char i);
+void checkBottomCols(void);
 void checkLeftCols(void);
 void checkRightCols(void);
 int main(void);
@@ -24,6 +24,9 @@ int main(void);
 rectangle player;
 ball myball;
 brick bricks[34];
+
+/* Aux vars */
+unsigned char index;
 
 /* Game Procedures */
 
@@ -230,25 +233,23 @@ void updateBall() {
 }
 
 void check_collisions(void) {
-    unsigned char i;
-    
-    i=0;
+    index=0;
     do {
-        checkBottomCols(i);       
-        i++;
-    } while(i!=34);
+        checkBottomCols();       
+        index++;
+    } while(index!=34);
 }
 
-void checkBottomCols(unsigned char i) {
+void checkBottomCols() {
     unsigned char brickx;
     
-    brickx=bricks[i].x+12;
-    if(bricks[i].enabled == 1 && bricks[i].y==myball.y
-        && myball.x>bricks[i].x && myball.x<brickx) {
+    brickx=bricks[index].x+12;
+    if(bricks[index].enabled == 1 && bricks[index].y==myball.y
+        && myball.x>bricks[index].x && myball.x<brickx) {
         myball.vy = 2;
-        bricks[i].enabled = 0;
-        bricks[i].color=CIAN;
-        drawRect(&bricks[i]);
+        bricks[index].enabled = 0;
+        bricks[index].color=CIAN;
+        drawRect(&bricks[index]);
     }        
 }
 
