@@ -231,7 +231,8 @@ void updateBall() {
 void checkBottomCols(void) {
     unsigned char i, brickx;
     
-    for(i=0; i<34; i++) {
+    i=0;
+    do {
         brickx=bricks[i].x+12;
         if(bricks[i].enabled == 1 && bricks[i].y==myball.y
             && myball.x>bricks[i].x && myball.x<brickx) {
@@ -240,7 +241,8 @@ void checkBottomCols(void) {
             bricks[i].color=CIAN;
             drawRect(&bricks[i]);
         }
-    }
+        i++;
+    } while(i!=34);
 }
 
 void checkLeftCols(void) {
