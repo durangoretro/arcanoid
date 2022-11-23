@@ -74,7 +74,8 @@ void initDrawEvenRow(byte y, byte index) {
     byte lastx, k, i;
     lastx = 0;
     k = index;
-    for(i=0; i<8; i++) {
+    i=0;
+    do {
         bricks[k].enabled = 1;
         bricks[k].x = lastx;
         lastx = lastx + 16;
@@ -84,7 +85,8 @@ void initDrawEvenRow(byte y, byte index) {
         bricks[k].color = MYSTIC_RED;
         drawRect(&bricks[k]);
         k++;
-    }
+        i++;
+    } while(i!=8);
 }
 
 void initDrawOddRow(byte y, byte index) {
