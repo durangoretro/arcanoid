@@ -240,6 +240,7 @@ void check_collisions(void) {
     do {
         checkBottomCols();
         checkLeftCols();
+        checkRightCols();
         current_brick++;
         index++;
     } while(index!=34);
@@ -274,14 +275,13 @@ void checkRightCols() {
     unsigned char i = 0, bally=0, ballx=0;
     ballx=myball.x+12;
     bally=myball.y-4;
-    for(i=0; i<34; i++) {
-        if(bricks[i].enabled == 1 && ballx == bricks[i].x
-            && myball.y>bricks[i].y && bally<bricks[i].y) {
-            myball.vx = -1;
-            bricks[i].enabled = 0;
-            bricks[i].color=CIAN;
-            drawRect(&bricks[i]);
-        }
+
+    if(current_brick->enabled == 1 && ballx == current_brick->x
+        && myball.y==current_brick->y && bally<current_brick->y) {
+        myball.vx = 1;
+        current_brick->enabled = 0;
+        current_brick->color=CIAN;
+        drawRect(current_brick);
     }
 }
 
