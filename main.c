@@ -24,6 +24,7 @@ int main(void);
 rectangle player;
 ball myball;
 brick bricks[34];
+brick *current_brick;
 
 /* Aux vars */
 unsigned char index;
@@ -235,30 +236,38 @@ void updateBall() {
 void check_collisions(void) {
     startStopwatch();
     index=0;
+    current_brick=bricks;
     do {
         checkBottomCols();
-        //checkLeftCols();
+        checkLeftCols();
+        current_brick++;
         index++;
     } while(index!=34);
     stopStopwatch();
 }
 
 void checkBottomCols() {
-    unsigned char brickx;
-    
-    brickx=bricks[index].x+12;
-    if(bricks[index].enabled == 1 && bricks[index].y==myball.y
-        && myball.x>bricks[index].x && myball.x<brickx) {
+    unsigned char brickx;    
+    brickx=current_brick->x+12;
+    if(current_brick->enabled == 1 && current_brick->y==myball.y
+        && current_brick->x<myball.x && myball.x<brickx) {
         myball.vy = 2;
-        //bricks[index].enabled = 0;
-        bricks[index].color=CIAN;
-        drawRect(&bricks[index]);
+        current_brick->enabled = 0;
+        current_brick->color=CIAN;
+        drawRect(current_brick);
     }        
 }
 
 void checkLeftCols() {
-    __asm__ ("lda %v", index);
-    __asm__("sta $df93");
+    unsigned char bricky;
+    bricky = current_brick->y+12;
+    if(current_brick->enabled == 1 && current_brick->x==myball.x
+        && current_brick->y==myball.y && myball.y==bricky) {
+        myball.vx = -1;
+        current_brick->enabled = 0;
+        current_brick->color=CIAN;
+        drawRect(current_brick);
+    } 
 }
 
 void checkRightCols() {
@@ -287,7 +296,7 @@ int main(void){
         //waitFrames(20);
         
         // Wait VSYNC
-        waitVSync();
+        //waitVSync();
         // Start counting time
         //startStopwatch();
         
