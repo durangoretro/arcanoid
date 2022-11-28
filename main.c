@@ -109,6 +109,8 @@ void initDrawOddRow(byte y, byte index) {
     bricks[k].width = 6;
     bricks[k].height = 4;
     bricks[k].color = MYSTIC_RED;
+    bricks[k].x2=bricks[k].x+bricks[k].width;
+    bricks[k].y2=bricks[k].y+bricks[k].height;
     drawRect(&bricks[k]);
     k++;
 
@@ -121,6 +123,8 @@ void initDrawOddRow(byte y, byte index) {
         bricks[k].width = 14;
         bricks[k].height = 4;
         bricks[k].color = MYSTIC_RED;
+        bricks[k].x2=bricks[k].x+bricks[k].width;
+        bricks[k].y2=bricks[k].y+bricks[k].height;
         drawRect(&bricks[k]);
         k++;
         i++;
@@ -133,6 +137,8 @@ void initDrawOddRow(byte y, byte index) {
     bricks[k].width = 6;
     bricks[k].height = 4;
     bricks[k].color = MYSTIC_RED;
+    bricks[k].x2=bricks[k].x+bricks[k].width;
+    bricks[k].y2=bricks[k].y+bricks[k].height;
     consoleLogStr("\nBrick\n");
     consoleLogDecimal(bricks[k].x);
     consoleLogDecimal(bricks[k].y);
@@ -248,10 +254,8 @@ void check_collisions(void) {
 }
 
 void checkBottomCols() {
-    unsigned char brickx;    
-    brickx=current_brick->x+12;
     if(current_brick->enabled == 1 && current_brick->y==myball.y
-        && current_brick->x<myball.x && myball.x<brickx) {
+        && current_brick->x<myball.x && myball.x<current_brick->x2) {
         myball.vy = 2;
         current_brick->enabled = 0;
         current_brick->color=CIAN;
@@ -275,7 +279,7 @@ int main(void){
         //waitFrames(20);
         
         // Wait VSYNC
-        //waitVSync();
+        waitVSync();
         // Start counting time
         //startStopwatch();
         
