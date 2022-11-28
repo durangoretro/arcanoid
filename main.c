@@ -88,6 +88,8 @@ void initDrawEvenRow(byte y, byte index) {
         bricks[k].width = 14;
         bricks[k].height = 4;
         bricks[k].color = MYSTIC_RED;
+        bricks[k].x2=bricks[k].x+bricks[k].width;
+        bricks[k].y2=bricks[k].y+bricks[k].height;
         drawRect(&bricks[k]);
         k++;
         i++;
