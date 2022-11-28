@@ -2,6 +2,7 @@
 .export _fillScreen
 .export _drawRect
 .export _drawBall
+.export _cleanBall
 .export _moveBall
 .export _moveRight
 .export _moveLeft
@@ -167,7 +168,7 @@ loop:
     RTS
 .endproc
 
-.proc _moveBall: near
+.proc _cleanBall: near
     ; Read pointer location
     STA DATA_POINTER
     STX DATA_POINTER+1
@@ -188,6 +189,11 @@ loop:
     LDY #$40
     STA (VMEM_POINTER),Y
     
+    RTS
+.endproc
+
+.proc _moveBall: near
+    JSR _cleanBall
     LDA DATA_POINTER
     LDX DATA_POINTER+1
     JMP _drawBall

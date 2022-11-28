@@ -24,6 +24,7 @@ rectangle player;
 ball myball;
 brick bricks[34];
 brick *current_brick;
+byte paddle_speed;
 
 /* Aux vars */
 unsigned char index;
@@ -192,10 +193,15 @@ void updatePlayer() {
     // Move left
     if(gamepad & BUTTON_LEFT && player.x>0) {
         moveLeft(&player);
+        paddle_speed=-1;
     }
     // MOve right
     else if(gamepad & BUTTON_RIGHT && player.x+player.width<128) {
         moveRight(&player);
+        paddle_speed=1;
+    }
+    else {        
+        paddle_speed=0;
     }
 }
 
@@ -211,6 +217,7 @@ void updateBall() {
         // Paddle collision
         if(myball.x >= player.x && myball.x<=player.x+player.width) {
             myball.vy = -2;
+            myball.vx=myball.vx+paddle_speed;
         }
         // Fail
         else {
@@ -218,16 +225,17 @@ void updateBall() {
             myball.vx = 0;
             myball.vy = 0;
             waitStart();
+            cleanBall(&myball);
             initBall();
-            moveBall(&myball);
+            drawBall(&myball);
         }
     }
     // Right collision
-    if(myball.x==128) {
+    if(128<=myball.x) {
         myball.vx = -1;
     }
     // Left collision
-    if(myball.x==0) {
+    if(myball.x<=0) {
         myball.vx = 1;
     }
     
