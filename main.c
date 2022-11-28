@@ -182,8 +182,6 @@ void updateGame() {
     updateBall();
     updatePlayer();
     check_collisions();
-    //checkLeftCols();
-    //checkRightCols();
 }
 
 void updatePlayer() {
@@ -254,7 +252,7 @@ void check_collisions(void) {
 }
 
 void checkBottomCols() {
-    if(current_brick->enabled == 1 && current_brick->y==myball.y
+    if(current_brick->enabled == 1 && current_brick->y2==myball.y
         && current_brick->x<myball.x && myball.x<current_brick->x2) {
         myball.vy = 2;
         current_brick->enabled = 0;
@@ -264,6 +262,13 @@ void checkBottomCols() {
 }
 
 void checkTopCols() {
+    if(current_brick->enabled == 1 && current_brick->y==myball.y
+        && current_brick->x<myball.x && myball.x<current_brick->x2) {
+        myball.vy = -2;
+        current_brick->enabled = 0;
+        current_brick->color=CIAN;
+        drawRect(current_brick);
+    }  
 }
 
 
@@ -276,7 +281,7 @@ int main(void){
     consoleLogHex(0xff);
     // Game loop
     while(1) {
-        //waitFrames(20);
+        //waitFrames(10);
         
         // Wait VSYNC
         waitVSync();
