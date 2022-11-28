@@ -47,6 +47,7 @@ typedef struct{
     byte color;
     byte width, height;
     byte enabled;
+    byte x2,y2;
 } brick;
 
 typedef struct{

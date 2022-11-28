@@ -14,13 +14,19 @@ void initScore(void);
 void resetBall(void);
 void initDrawEvenRow(byte y, byte index);
 void initDrawOddRow(byte y, byte index);
-void checkBrickCols(void);
+void check_collisions(void);
+void checkBottomCols(void);
+void checkTopCols(void);
 int main(void);
 
 /* Game Data */
 rectangle player;
 ball myball;
 brick bricks[34];
+brick *current_brick;
+
+/* Aux vars */
+unsigned char index;
 
 /* Game Procedures */
 
@@ -72,7 +78,8 @@ void initDrawEvenRow(byte y, byte index) {
     byte lastx, k, i;
     lastx = 0;
     k = index;
-    for(i=0; i<8; i++) {
+    i=0;
+    do {
         bricks[k].enabled = 1;
         bricks[k].x = lastx;
         lastx = lastx + 16;
@@ -80,9 +87,12 @@ void initDrawEvenRow(byte y, byte index) {
         bricks[k].width = 14;
         bricks[k].height = 4;
         bricks[k].color = MYSTIC_RED;
+        bricks[k].x2=bricks[k].x+bricks[k].width;
+        bricks[k].y2=bricks[k].y+bricks[k].height;
         drawRect(&bricks[k]);
         k++;
-    }
+        i++;
+    } while(i!=8);
 }
 
 void initDrawOddRow(byte y, byte index) {
@@ -99,10 +109,13 @@ void initDrawOddRow(byte y, byte index) {
     bricks[k].width = 6;
     bricks[k].height = 4;
     bricks[k].color = MYSTIC_RED;
+    bricks[k].x2=bricks[k].x+bricks[k].width;
+    bricks[k].y2=bricks[k].y+bricks[k].height;
     drawRect(&bricks[k]);
     k++;
 
-    for(i=0; i<7; i++) {
+    i=0;
+    do {
         bricks[k].enabled = 1;
         bricks[k].x = lastx;
         lastx = lastx + 16;
@@ -110,9 +123,12 @@ void initDrawOddRow(byte y, byte index) {
         bricks[k].width = 14;
         bricks[k].height = 4;
         bricks[k].color = MYSTIC_RED;
+        bricks[k].x2=bricks[k].x+bricks[k].width;
+        bricks[k].y2=bricks[k].y+bricks[k].height;
         drawRect(&bricks[k]);
         k++;
-    }
+        i++;
+    } while(i!=7);
         
     // Draw last brick
     bricks[k].enabled = 1;
@@ -121,6 +137,8 @@ void initDrawOddRow(byte y, byte index) {
     bricks[k].width = 6;
     bricks[k].height = 4;
     bricks[k].color = MYSTIC_RED;
+    bricks[k].x2=bricks[k].x+bricks[k].width;
+    bricks[k].y2=bricks[k].y+bricks[k].height;
     consoleLogStr("\nBrick\n");
     consoleLogDecimal(bricks[k].x);
     consoleLogDecimal(bricks[k].y);
@@ -136,7 +154,8 @@ void initBricks() {
 	k = 0;
 	lasty = 6;
 	
-    for(i=0; i<2; i++) {
+    i=0;
+    do {
         // Even rows
         initDrawEvenRow(lasty, k);
         k = k + 8;
@@ -145,7 +164,8 @@ void initBricks() {
         initDrawOddRow(lasty, k);
         k = k + 9;
         lasty = lasty + 6;
-    }	
+        i++;
+    } while(i!=2);
 }
 
 void initScore() {
@@ -161,7 +181,7 @@ void initScore() {
 void updateGame() {
     updateBall();
     updatePlayer();
-    checkBrickCols();
+    check_collisions();
 }
 
 void updatePlayer() {
@@ -218,20 +238,40 @@ void updateBall() {
     moveBall(&myball);
 }
 
-void checkBrickCols(void) {
-    unsigned char i, brickx, bricky;
-    for(i=0; i<34; i++) {
-        brickx=bricks[i].x+12;
-        bricky=bricks[i].y+12;
-        if(bricks[i].enabled == 1 
-            && myball.x>=bricks[i].x && myball.x<=brickx
-            && myball.y>=bricks[i].y && myball.y<=bricky) {
-            bricks[i].enabled = 0;
-            bricks[i].color=CIAN;
-            drawRect(&bricks[i]);
-        }
-    }
+void check_collisions(void) {
+    startStopwatch();
+    index=0;
+    current_brick=bricks;
+    do {
+        checkBottomCols();
+        checkTopCols();
+        current_brick++;
+        index++;
+    } while(index!=34);
+    stopStopwatch();
 }
+
+void checkBottomCols() {
+    if(current_brick->enabled == 1 && current_brick->y2==myball.y
+        && current_brick->x<myball.x && myball.x<current_brick->x2) {
+        myball.vy = 2;
+        current_brick->enabled = 0;
+        current_brick->color=CIAN;
+        drawRect(current_brick);
+    }        
+}
+
+void checkTopCols() {
+    if(current_brick->enabled == 1 && current_brick->y==myball.y
+        && current_brick->x<myball.x && myball.x<current_brick->x2) {
+        myball.vy = -2;
+        current_brick->enabled = 0;
+        current_brick->color=CIAN;
+        drawRect(current_brick);
+    }  
+}
+
+
 
 int main(void){
     // Init game
@@ -241,18 +281,18 @@ int main(void){
     consoleLogHex(0xff);
     // Game loop
     while(1) {
-        //waitFrames(20);
+        //waitFrames(10);
         
         // Wait VSYNC
         waitVSync();
         // Start counting time
-        startStopwatch();
+        //startStopwatch();
         
         // Update game
         updateGame();
         
         // Stop counting time
-        stopStopwatch();        
+        //stopStopwatch();        
     }
     
     return 0;
