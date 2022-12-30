@@ -1,6 +1,7 @@
 #include "dlib.h"
 #include <psv.h>
 #include <system.h>
+#include <glyph.h>
 
 /* Procedure definitions */
 void initGame(void);
@@ -25,6 +26,7 @@ ball myball;
 brick bricks[34];
 brick *current_brick;
 byte paddle_speed;
+long score;
 
 /* Aux vars */
 unsigned char index;
@@ -170,13 +172,15 @@ void initBricks() {
 }
 
 void initScore() {
-	rectangle score;
-	score.x = 0;
-	score.y = 0;
-	score.width = 128;
-	score.height = 6;
-	score.color = BLACK;
-	drawRect(&score);
+	rectangle scoreRect;
+	scoreRect.x = 0;
+	scoreRect.y = 0;
+	scoreRect.width = 128;
+	scoreRect.height = 6;
+	scoreRect.color = BLACK;
+	drawRect(&scoreRect);
+    
+    printBCD(10, 0, score);
 }
 
 void updateGame() {
