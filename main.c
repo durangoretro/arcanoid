@@ -2,6 +2,7 @@
 #include <psv.h>
 #include <system.h>
 #include <glyph.h>
+#include "bin/font.h"
 
 /* Procedure definitions */
 void initGame(void);
@@ -180,7 +181,7 @@ void initScore() {
 	scoreRect.color = BLACK;
 	drawRect(&scoreRect);
     
-    printBCD(10, 0, score);
+    printBCD(0, 0, score, font);
 }
 
 void updateGame() {
@@ -199,7 +200,7 @@ void updatePlayer() {
         moveLeft(&player);
         paddle_speed=-1;
     }
-    // MOve right
+    // Move right
     else if(gamepad & BUTTON_RIGHT && player.x+player.width<128) {
         moveRight(&player);
         paddle_speed=1;
