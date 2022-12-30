@@ -26,8 +26,8 @@ $(BUILD_DIR)/:
 	mkdir -p $(BUILD_DIR)
 
 	
-arkanoid.bin: $(BUILD_DIR)/ $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o $(DCLIB)/durango.lib $(DCLIB)/psv.lib $(DCLIB)/system.lib $(DCLIB)/glyph.lib
-	ld65 -C $(CFG) $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o $(DCLIB)/durango.lib $(DCLIB)/psv.lib $(DCLIB)/system.lib $(DCLIB)/glyph.lib -o arkanoid.bin	
+arkanoid.bin: $(BUILD_DIR)/ $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o $(DCLIB)/psv.lib $(DCLIB)/system.lib $(DCLIB)/glyph.lib $(DCLIB)/durango.lib
+	ld65 -C $(CFG) $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o $(DCLIB)/psv.lib $(DCLIB)/system.lib $(DCLIB)/glyph.lib $(DCLIB)/durango.lib -o arkanoid.bin	
 
 clean:
 	rm -Rf $(BUILD_DIR) arkanoid.bin
