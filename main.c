@@ -181,7 +181,7 @@ void initScore() {
 	scoreRect.color = BLACK;
 	drawRect(&scoreRect);
     
-    printBCD(10, 2, score, font);
+    printBCD(10, 2, font, score);
 }
 
 void updateGame() {
