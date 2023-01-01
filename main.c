@@ -178,10 +178,10 @@ void initScore() {
 	scoreRect.y = 0;
 	scoreRect.width = 128;
 	scoreRect.height = 6;
-	scoreRect.color = BLACK;
+	scoreRect.color = PINK_FLAMINGO;
 	drawRect(&scoreRect);
     
-    printBCD(10, 2, font, score);
+    printBCD(0, 0, font, score);
 }
 
 void updateGame() {
