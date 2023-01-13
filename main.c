@@ -156,7 +156,7 @@ void initDrawOddRow(byte y, byte index) {
 void initBricks() {
 	byte i, k, lasty;
 	k = 0;
-	lasty = 6;
+	lasty = 8;
 	
     i=0;
     do {
@@ -177,11 +177,11 @@ void initScore() {
 	scoreRect.x = 0;
 	scoreRect.y = 0;
 	scoreRect.width = 128;
-	scoreRect.height = 6;
+	scoreRect.height = 8;
 	scoreRect.color = PINK_FLAMINGO;
 	drawRect(&scoreRect);
     
-    printBCD(0, 0, font, score);
+    printBCD(8, 0, font, RED, WHITE, score);
 }
 
 void updateGame() {
