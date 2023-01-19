@@ -180,8 +180,12 @@ void initScore() {
 	scoreRect.height = 8;
 	scoreRect.color = PINK_FLAMINGO;
 	drawRect(&scoreRect);
-    
-    printBCD(8, 0, font, RED, WHITE, score);
+    consoleLogHex(0x00);
+    consoleLogHex(0xff);
+    consoleLogHex(0x00);
+    consoleLogHex(0xff);
+    score=0x12345678;
+    printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
 }
 
 void updateGame() {
