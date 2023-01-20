@@ -21,6 +21,8 @@ void checkBottomCols(void);
 void checkTopCols(void);
 int main(void);
 
+long PRICE = 5;
+
 /* Game Data */
 rectangle player;
 ball myball;
@@ -184,7 +186,6 @@ void initScore() {
     consoleLogHex(0xff);
     consoleLogHex(0x00);
     consoleLogHex(0xff);
-    score=0x12345678;
     printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
 }
 
@@ -275,6 +276,8 @@ void checkBottomCols() {
         current_brick->enabled = 0;
         current_brick->color=CIAN;
         drawRect(current_brick);
+        addBCD(&score, &PRICE);
+        printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
     }        
 }
 
@@ -285,6 +288,7 @@ void checkTopCols() {
         current_brick->enabled = 0;
         current_brick->color=CIAN;
         drawRect(current_brick);
+        printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
     }  
 }
 
