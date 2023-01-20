@@ -21,8 +21,6 @@ void checkBottomCols(void);
 void checkTopCols(void);
 int main(void);
 
-long PRICE = 5;
-
 /* Game Data */
 rectangle player;
 ball myball;
@@ -30,6 +28,7 @@ brick bricks[34];
 brick *current_brick;
 byte paddle_speed;
 long score;
+long price;
 
 /* Aux vars */
 unsigned char index;
@@ -187,6 +186,7 @@ void initScore() {
     consoleLogHex(0x00);
     consoleLogHex(0xff);
     printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
+    price=5;
 }
 
 void updateGame() {
@@ -219,7 +219,7 @@ void updateBall() {
     byte old_vx;
     
     // Top collision
-    if(myball.y==6) {
+    if(myball.y==8) {
         myball.vy = 2;
     }
     // Bottom collision
@@ -228,6 +228,7 @@ void updateBall() {
         if(myball.x >= player.x && myball.x<=player.x+player.width) {
             myball.vy = -2;
             myball.vx=myball.vx+paddle_speed;
+            price=5;
         }
         // Fail
         else {
@@ -276,8 +277,9 @@ void checkBottomCols() {
         current_brick->enabled = 0;
         current_brick->color=CIAN;
         drawRect(current_brick);
-        addBCD(&score, &PRICE);
+        addBCD(&score, &price);
         printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
+        price+=price;
     }        
 }
 
@@ -288,7 +290,9 @@ void checkTopCols() {
         current_brick->enabled = 0;
         current_brick->color=CIAN;
         drawRect(current_brick);
+        addBCD(&score, &price);
         printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
+        price+=price;
     }  
 }
 
