@@ -241,12 +241,12 @@ void updateBall() {
             drawBall(&myball);
         }
     }
-    // Right collision
+	// Right collision
     if(128<=myball.x) {
         myball.vx = -1;
     }
     // Left collision
-    if(myball.x<=0) {
+    if(0xf0<=myball.x) {
         myball.vx = 1;
     }
     
@@ -258,7 +258,6 @@ void updateBall() {
 }
 
 void check_collisions(void) {
-    startStopwatch();
     index=0;
     current_brick=bricks;
     do {
@@ -267,7 +266,6 @@ void check_collisions(void) {
         current_brick++;
         index++;
     } while(index!=34);
-    stopStopwatch();
 }
 
 void checkBottomCols() {
