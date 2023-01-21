@@ -19,6 +19,7 @@ void initDrawOddRow(byte y, byte index);
 void check_collisions(void);
 void checkBottomCols(void);
 void checkTopCols(void);
+void updateScore(void);
 int main(void);
 
 /* Game Data */
@@ -236,13 +237,15 @@ void updateBall() {
             myball.vx = 0;
             myball.vy = 0;
             waitStart();
+			score=0;
+			updateScore();
             cleanBall(&myball);
             initBall();
             drawBall(&myball);
         }
     }
 	// Right collision
-    if(128<=myball.x) {
+    if(127<=myball.x) {
         myball.vx = -1;
     }
     // Left collision
@@ -276,7 +279,7 @@ void checkBottomCols() {
         current_brick->color=CIAN;
         drawRect(current_brick);
         addBCD(&score, &price);
-        printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
+        updateScore();
         price+=price;
     }        
 }
@@ -289,11 +292,14 @@ void checkTopCols() {
         current_brick->color=CIAN;
         drawRect(current_brick);
         addBCD(&score, &price);
-        printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
+        updateScore();
         price+=price;
     }  
 }
 
+void updateScore() {
+	printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
+}
 
 
 int main(void){
