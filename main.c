@@ -3,6 +3,7 @@
 #include <system.h>
 #include <glyph.h>
 #include "bin/font.h"
+#include "bin/title.h"
 
 /* Procedure definitions */
 void initGame(void);
@@ -20,6 +21,7 @@ void check_collisions(void);
 void checkBottomCols(void);
 void checkTopCols(void);
 void updateScore(void);
+void displayTitle(void);
 int main(void);
 
 /* Game Data */
@@ -301,8 +303,14 @@ void updateScore() {
 	printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
 }
 
+void displayTitle() {
+    render_image(title);
+    waitStart();
+}
 
 int main(void){
+    displayTitle();   
+    
     // Init game
     initGame();
     
