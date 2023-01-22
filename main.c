@@ -29,6 +29,7 @@ rectangle player;
 ball myball;
 brick bricks[34];
 brick *current_brick;
+char brokens;
 byte paddle_speed;
 long score;
 long price;
@@ -161,7 +162,7 @@ void initBricks() {
 	byte i, k, lasty;
 	k = 0;
 	lasty = 8;
-	
+	brokens = 0;
     i=0;
     do {
         // Even rows
@@ -232,6 +233,9 @@ void updateBall() {
             myball.vy = -2;
             myball.vx=myball.vx+paddle_speed;
             price=5;
+            if(brokens==34) {
+                initBricks();
+            }
         }
         // Fail
         else {
@@ -280,6 +284,7 @@ void checkBottomCols() {
         current_brick->enabled = 0;
         current_brick->color=CIAN;
         drawRect(current_brick);
+        brokens++;
         addBCD(&score, &price);
         updateScore();
         price+=price;
@@ -293,6 +298,7 @@ void checkTopCols() {
         current_brick->enabled = 0;
         current_brick->color=CIAN;
         drawRect(current_brick);
+        brokens++;
         addBCD(&score, &price);
         updateScore();
         price+=price;
