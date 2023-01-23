@@ -200,17 +200,19 @@ void updateGame() {
 }
 
 void updatePlayer() {
-    byte gamepad;
+    byte gamepad, keyboard;
     
     // Read gamepad
     gamepad=readGamepad(0);
+    // Read keyboard
+    keyboard=readKeyboard(0);
     // Move left
-    if(gamepad & BUTTON_LEFT && player.x>0) {
+    if((gamepad & BUTTON_LEFT || keyboard & KEY_SHIFT) && player.x>0) {
         moveLeft(&player);
         paddle_speed=-1;
     }
     // Move right
-    else if(gamepad & BUTTON_RIGHT && player.x+player.width<128) {
+    else if((gamepad & BUTTON_RIGHT || keyboard & KEY_SPACE) && player.x+player.width<128) {
         moveRight(&player);
         paddle_speed=1;
     }
