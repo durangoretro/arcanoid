@@ -5,7 +5,7 @@ DCLIB=../dclib/bin
 DCINC=../dclib/inc
 RESCOMP = ../rescomp/target/rescomp.jar
 
-all: arkanoid.bin
+all: arkanoid.dux
 
 $(BUILD_DIR)/title.h: breakout.png $(BUILD_DIR)
 	java -jar ${RESCOMP} -n title -m BACKGROUND -i breakout.png -o $(BUILD_DIR)/title.h
@@ -28,8 +28,11 @@ $(BUILD_DIR)/:
 	mkdir -p $(BUILD_DIR)
 
 	
-arkanoid.bin: $(BUILD_DIR)/ $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o $(DCLIB)/psv.lib $(DCLIB)/system.lib $(DCLIB)/glyph.lib $(DCLIB)/durango.lib
-	ld65 -C $(CFG) $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o $(DCLIB)/psv.lib $(DCLIB)/system.lib $(DCLIB)/glyph.lib $(DCLIB)/durango.lib -o arkanoid.bin	
+$(BUILD_DIR)/arkanoid.bin: $(BUILD_DIR)/ $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o $(DCLIB)/psv.lib $(DCLIB)/system.lib $(DCLIB)/glyph.lib $(DCLIB)/durango.lib
+	ld65 -C $(CFG) $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o $(DCLIB)/psv.lib $(DCLIB)/system.lib $(DCLIB)/glyph.lib $(DCLIB)/durango.lib -o $(BUILD_DIR)/arkanoid.bin	
+
+arkanoid.dux: $(BUILD_DIR)/arkanoid.bin $(BUILD_DIR)
+	java -jar ${RESCOMP} -m SIGNER -n v1.0 -i $(BUILD_DIR)/arkanoid.bin -o arkanoid.dux
 
 clean:
-	rm -Rf $(BUILD_DIR) arkanoid.bin
+	rm -Rf $(BUILD_DIR) arkanoid.dux

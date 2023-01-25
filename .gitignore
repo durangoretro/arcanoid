@@ -1,3 +1,4 @@
 bin/
 arkanoid.bin
 *.temp
+*.dux
