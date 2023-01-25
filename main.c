@@ -33,6 +33,8 @@ char brokens;
 byte paddle_speed;
 long score;
 long price;
+char dry;
+long pen;
 
 /* Aux vars */
 unsigned char index;
@@ -42,8 +44,10 @@ unsigned char index;
 void initGame() {
     consoleLogStr("Init Game\n");
     startStopwatch();
+    pen=1;
+	dry=1;
     
-    // Draw background
+	// Draw background
     fillScreen(CIAN);
 
 	// Init and Draw score
@@ -235,6 +239,11 @@ void updateBall() {
             myball.vy = -2;
             myball.vx=myball.vx+paddle_speed;
             price=5;
+			if(dry) {
+				subBCD(&score, &pen);
+        		updateScore();
+			}
+			dry=1;
             if(brokens==34) {
                 initBricks();
             }
