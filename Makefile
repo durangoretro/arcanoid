@@ -32,7 +32,7 @@ $(BUILD_DIR)/arkanoid.bin: $(BUILD_DIR)/ $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o
 	ld65 -C $(CFG) $(BUILD_DIR)/main.o $(BUILD_DIR)/dlib.o $(DCLIB)/psv.lib $(DCLIB)/system.lib $(DCLIB)/glyph.lib $(DCLIB)/durango.lib -o $(BUILD_DIR)/arkanoid.bin	
 
 arkanoid.dux: $(BUILD_DIR)/arkanoid.bin $(BUILD_DIR)
-	java -jar ${RESCOMP} -m SIGNER -n 0$$(git log -1 --abbrev-commit | head -1 | sed 's/commit //') -i $(BUILD_DIR)/arkanoid.bin -o arkanoid.dux
+	java -jar ${RESCOMP} -m SIGNER -n $$(git log -1 | head -1 | sed 's/commit //' | cut -c1-8) -i $(BUILD_DIR)/arkanoid.bin -o arkanoid.dux
 
 clean:
 	rm -Rf $(BUILD_DIR) arkanoid.dux

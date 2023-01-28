@@ -323,8 +323,9 @@ void updateScore() {
 void displayTitle() {
     long version;
     render_image(title);
-    version = getBuildVersion();
-    version=0x12ab;
+    consoleLogHex(0x00);
+    version = 0xffffffff;
+    getBuildVersion(&version);
     printBCD(80, 95, font, WHITE, BLACK, version);
     waitStart();
 }
