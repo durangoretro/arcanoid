@@ -1,5 +1,4 @@
 #include "dlib.h"
-#include <psv.h>
 #include <system.h>
 #include <glyph.h>
 #include "bin/font.h"
@@ -42,8 +41,6 @@ unsigned char index;
 /* Game Procedures */
 
 void initGame() {
-    consoleLogStr("Init Game\n");
-    startStopwatch();
     pen=1;
 	dry=1;
     
@@ -61,8 +58,6 @@ void initGame() {
     
     // Init and draw ball
     initBall();
-    
-    stopStopwatch();
 }
 
 void initBall() {
@@ -110,8 +105,6 @@ void initDrawEvenRow(byte y, byte index) {
 
 void initDrawOddRow(byte y, byte index) {
     byte lastx, k, i;    
-    consoleLogStr("\nY\n");
-    consoleLogDecimal(y);
     lastx = 0;
     k = index;
     // Draw first brick
@@ -152,11 +145,6 @@ void initDrawOddRow(byte y, byte index) {
     bricks[k].color = MYSTIC_RED;
     bricks[k].x2=bricks[k].x+bricks[k].width;
     bricks[k].y2=bricks[k].y+bricks[k].height;
-    consoleLogStr("\nBrick\n");
-    consoleLogDecimal(bricks[k].x);
-    consoleLogDecimal(bricks[k].y);
-    consoleLogDecimal(bricks[k].width);
-    consoleLogDecimal(bricks[k].height);
     drawRect(&bricks[k]);
 }
 
@@ -189,10 +177,6 @@ void initScore() {
 	scoreRect.height = 8;
 	scoreRect.color = PINK_FLAMINGO;
 	drawRect(&scoreRect);
-    consoleLogHex(0x00);
-    consoleLogHex(0xff);
-    consoleLogHex(0x00);
-    consoleLogHex(0xff);
     printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
     price=5;
 }
@@ -323,7 +307,6 @@ void updateScore() {
 void displayTitle() {
     long version;
     render_image(title);
-    consoleLogHex(0x00);
     version = 0xffffffff;
     getBuildVersion(&version);
     printBCD(80, 95, font, WHITE, BLACK, version);
@@ -336,22 +319,16 @@ int main(void){
     // Init game
     initGame();
     
-    consoleLogStr("Game loop\n");
-    consoleLogHex(0xff);
     // Game loop
     while(1) {
         //waitFrames(10);
         
         // Wait VSYNC
         waitVSync();
-        // Start counting time
-        //startStopwatch();
         
         // Update game
         updateGame();
         
-        // Stop counting time
-        //stopStopwatch();        
     }
     
     return 0;
