@@ -1,7 +1,7 @@
 #include "dlib.h"
 #include <system.h>
 #include <glyph.h>
-#include "bin/font.h"
+#include <font.h>
 #include "bin/title.h"
 
 /* Procedure definitions */
@@ -21,6 +21,7 @@ void checkBottomCols(void);
 void checkTopCols(void);
 void updateScore(void);
 void displayTitle(void);
+
 int main(void);
 
 /* Game Data */
@@ -37,6 +38,7 @@ long pen;
 
 /* Aux vars */
 unsigned char index;
+char dclib_version[10];
 
 /* Game Procedures */
 
@@ -310,6 +312,8 @@ void displayTitle() {
     version = 0xffffffff;
     getBuildVersion(&version);
     printBCD(80, 95, font, WHITE, BLACK, version);
+    getDCLIBVersion(dclib_version);
+    printStr(0, 95, font, WHITE, BLACK, dclib_version);
     waitStart();
 }
 
