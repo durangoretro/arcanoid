@@ -1,9 +1,9 @@
 SOURCE_DIR=.
 BUILD_DIR=bin
-CFG=../dclib/cfg/durango16k.cfg
-DCLIB=../dclib/bin
-DCINC=../dclib/inc
-RESCOMP = ../rescomp/target/rescomp.jar
+CFG ?= ../dclib/cfg/durango16k.cfg
+DCLIB ?= ../dclib/bin
+DCINC ?= ../dclib/inc
+RESCOMP ?= ../rescomp/target/rescomp.jar
 
 all: arkanoid.dux
 
