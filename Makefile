@@ -25,7 +25,7 @@ $(BUILD_DIR)/arkanoid.bin: $(BUILD_DIR)/ $(BUILD_DIR)/main.o $(DCLIB)/psv.lib $(
 	ld65 -m $(BUILD_DIR)/arkanoid.txt -C $(CFG) $(BUILD_DIR)/main.o $(DCLIB)/qgraph.lib $(DCLIB)/psv.lib $(DCLIB)/system.lib $(DCLIB)/glyph.lib $(DCLIB)/durango.lib -o $(BUILD_DIR)/arkanoid.bin	
 
 arkanoid.dux: $(BUILD_DIR)/arkanoid.bin $(BUILD_DIR)
-	java -jar ${RESCOMP} -m SIGNER -n $$(git log -1 | head -1 | sed 's/commit //' | cut -c1-8) -t ARKANOID -d "The all times classic game" -i $(BUILD_DIR)/arkanoid.bin -o arkanoid.dux
+	java -jar ${RESCOMP} -m SIGNER -n $$(git log -1 | head -1 | sed 's/commit //' | cut -c1-8) -t ARKANOID -d "The all times classic briks game" -i $(BUILD_DIR)/arkanoid.bin -o arkanoid.dux
 
 clean:
 	rm -Rf $(BUILD_DIR) arkanoid.dux
