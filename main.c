@@ -38,7 +38,7 @@ long pen;
 
 /* Aux vars */
 unsigned char index;
-char dclib_version[10];
+char build_hash[17];
 
 /* Game Procedures */
 
@@ -307,13 +307,9 @@ void updateScore() {
 }
 
 void displayTitle() {
-    long version;
     render_image(title);
-    version = 0xffffffff;
-    getBuildVersion(&version);
-    printBCD(80, 95, font, WHITE, BLACK, version);
-    getDCLIBVersion(dclib_version);
-    printStr(0, 95, font, WHITE, BLACK, dclib_version);
+    getBuildVersion(build_hash);
+    printStr(0, 95, font, WHITE, BLACK, build_hash);
     waitStart();
 }
 
