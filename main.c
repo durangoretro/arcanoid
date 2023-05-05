@@ -33,8 +33,7 @@ char brokens;
 byte paddle_speed;
 long score;
 long price;
-char dry;
-long pen;
+char lives;
 
 /* Aux vars */
 unsigned char index;
@@ -43,10 +42,7 @@ char build_hash[17];
 /* Game Procedures */
 
 void initGame() {
-    pen=1;
-	dry=1;
-    
-	// Draw background
+    // Draw background
     fillScreen(CIAN);
 
 	// Init and Draw score
@@ -76,7 +72,8 @@ void resetBall() {
 }
 
 void initPlayer() {
-	player.x = 48;
+	lives=4;
+    player.x = 48;
     player.y = 122;
     player.width = 32;
     player.height = 4;
@@ -225,12 +222,7 @@ void updateBall() {
             myball.vy = -2;
             myball.vx=myball.vx+paddle_speed;
             price=5;
-			if(dry) {
-				subBCD(&score, &pen);
-        		updateScore();
-			}
-			dry=1;
-            if(brokens==34) {
+			if(brokens==34) {
                 initBricks();
             }
         }
@@ -240,7 +232,9 @@ void updateBall() {
             myball.vx = 0;
             myball.vy = 0;
             waitStart();
-			score=0;
+			lives--;
+            price=5;
+            while(lives==0);
 			updateScore();
             cleanBall(&myball);
             initBall();
