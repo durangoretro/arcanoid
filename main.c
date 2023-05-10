@@ -2,6 +2,7 @@
 #include <system.h>
 #include <glyph.h>
 #include <font.h>
+#include <psv.h>
 #include "bin/title.h"
 
 /* Procedure definitions */
@@ -21,6 +22,7 @@ void checkBottomCols(void);
 void checkTopCols(void);
 void updateScore(void);
 void displayTitle(void);
+void draw_lives(void);
 
 int main(void);
 
@@ -79,6 +81,7 @@ void initPlayer() {
     player.height = 4;
 	player.color = GREEN;
     drawRect(&player);
+    draw_lives();
 }
 
 void initDrawEvenRow(byte y, byte index) {
@@ -170,7 +173,7 @@ void initBricks() {
 
 void initScore() {
 	rectangle scoreRect;
-	scoreRect.x = 0;
+    scoreRect.x = 0;
 	scoreRect.y = 0;
 	scoreRect.width = 128;
 	scoreRect.height = 8;
@@ -187,19 +190,18 @@ void updateGame() {
 }
 
 void updatePlayer() {
-    byte gamepad, keyboard;
+    byte gamepad;
     
     // Read gamepad
     gamepad=readGamepad(0);
-    // Read keyboard
-    keyboard=readKeyboard(0);
+    
     // Move left
-    if((gamepad & BUTTON_LEFT || keyboard & KEY_SHIFT) && player.x>0) {
+    if((gamepad & BUTTON_LEFT || readKeyboard(ROW_KEY_ARROW_LEFT) & KEY_ARROW_LEFT) && player.x>0) {
         moveLeft(&player);
         paddle_speed=-1;
     }
     // Move right
-    else if((gamepad & BUTTON_RIGHT || keyboard & KEY_SPACE) && player.x+player.width<128) {
+    else if((gamepad & BUTTON_RIGHT || readKeyboard(ROW_KEY_ARROW_RIGHT) & KEY_ARROW_RIGHT) && player.x+player.width<128) {
         moveRight(&player);
         paddle_speed=1;
     }
@@ -234,7 +236,8 @@ void updateBall() {
             waitStart();
 			lives--;
             price=5;
-            while(lives==0);
+            while(lives==0xff);
+            draw_lives();
 			updateScore();
             cleanBall(&myball);
             initBall();
@@ -298,6 +301,30 @@ void checkTopCols() {
 
 void updateScore() {
 	printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
+}
+
+void draw_lives() {
+    ball tball;
+    rectangle scoreRect;
+    char i;
+    
+    scoreRect.x = 0;
+	scoreRect.y = 0;
+	scoreRect.width = 30;
+	scoreRect.height = 8;
+	scoreRect.color = PINK_FLAMINGO;
+	drawRect(&scoreRect);
+    if(lives!=0) {
+        tball.y=3;
+        tball.x=10;
+        tball.color=GREEN;
+        i=0;
+        do {
+            drawBall(&tball);
+            tball.x+=6;
+            i++;
+        }while(i<lives);
+    }
 }
 
 void displayTitle() {
