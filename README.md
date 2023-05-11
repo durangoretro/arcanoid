@@ -6,7 +6,7 @@ Breakout-like Game
 
 Press <kbd>Enter</kbd> to Start  and <kbd><-</kbd> or <kbd>-></kbd> (5 and 8 on Durango) to move left or right.
   
-If you are using perdita, run with ```-g``` to emulate keybord.
+If you are using perdita, run with ```-g``` to emulate gamepads.
   
 ## Compile
 
