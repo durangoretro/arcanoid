@@ -1,12 +1,12 @@
 # Arkanoid
-Breakout Like Game
+Breakout-like Game
 
 ![imagen](https://github.com/durangoretro/arkanoid/assets/6067824/738ddcfc-cb3c-40fe-a1b5-7f27989a7351)
 
 
-Press <kbd>Enter</kbd> to Start  and <kbd><-</kbd> or <kbd>-></kbd> (5 and 8 on Durango) to move left or rigth.
+Press <kbd>Enter</kbd> to Start  and <kbd><-</kbd> or <kbd>-></kbd> (5 and 8 on Durango) to move left or right.
   
-If you are using perdita run with ```-g``` to emulate keybord.
+If you are using perdita, run with ```-g``` to emulate keybord.
   
 ## Compile
 
