@@ -74,7 +74,8 @@ void resetBall() {
 }
 
 void initPlayer() {
-	lives=4;
+	score=0;
+    lives=4;
     player.x = 48;
     player.y = 122;
     player.width = 32;
@@ -236,12 +237,17 @@ void updateBall() {
             waitButton();
 			lives--;
             price=5;
-            while(lives==0xff);
-            draw_lives();
-			updateScore();
-            cleanBall(&myball);
-            initBall();
-            drawBall(&myball);
+            if(lives==0xff) {
+                waitStart();
+                initGame();
+            }
+            else {
+                draw_lives();
+                updateScore();
+                cleanBall(&myball);
+                initBall();
+                drawBall(&myball);
+            }
         }
     }
 	// Right collision
