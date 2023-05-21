@@ -23,6 +23,7 @@ void checkTopCols(void);
 void updateScore(void);
 void displayTitle(void);
 void draw_lives(void);
+void cleanBanner(void);
 
 int main(void);
 
@@ -184,6 +185,16 @@ void initScore() {
     price=5;
 }
 
+void cleanBanner() {
+    rectangle cleanrect;
+    cleanrect.x = 0;
+	cleanrect.y = 40;
+	cleanrect.width = 128;
+	cleanrect.height = 64;
+	cleanrect.color = CIAN;
+	drawRect(&cleanrect);
+}
+
 void updateGame() {
     updateBall();
     updatePlayer();
@@ -235,20 +246,25 @@ void updateBall() {
             myball.vx = 0;
             myball.vy = 0;
             cleanBall(&myball);
-            waitButton();
-			lives--;
+            lives--;
             price=5;
-            if(lives==0xff) {
-                waitStart();
-                initGame();
-            }
-            else {
+            if(lives!=0xff) {
+                printStr(20, 60, font, BLACK, CIAN, "PRESS SPACE...");
+                waitButton();
+                cleanBanner();
+                
                 draw_lives();
                 updateScore();
                 cleanBall(&myball);
                 initBall();
                 drawBall(&myball);
-            }
+            }			
+            else {
+                printStr(20, 60, font, BLACK, CIAN, "GAME OVER");
+                waitStart();
+                cleanBanner();
+                initGame();
+            }            
         }
     }
 	// Right collision
