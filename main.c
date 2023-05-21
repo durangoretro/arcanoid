@@ -234,6 +234,7 @@ void updateBall() {
             old_vx = myball.vx;
             myball.vx = 0;
             myball.vy = 0;
+            cleanBall(&myball);
             waitButton();
 			lives--;
             price=5;
