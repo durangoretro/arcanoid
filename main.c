@@ -4,6 +4,7 @@
 #include <font.h>
 #include <psv.h>
 #include "bin/title.h"
+#include "bin/controls.h"
 
 /* Procedure definitions */
 void initGame(void);
@@ -22,6 +23,7 @@ void checkBottomCols(void);
 void checkTopCols(void);
 void updateScore(void);
 void displayTitle(void);
+void displayControls(void);
 void draw_lives(void);
 void cleanBanner(void);
 
@@ -357,8 +359,14 @@ void displayTitle() {
     waitStart();
 }
 
+void displayControls() {
+    render_image(controls);
+    waitStart();
+}
+
 int main(void){
     displayTitle();   
+    displayControls();
     
     // Init game
     initGame();
