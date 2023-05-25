@@ -7,6 +7,14 @@
 #include "bin/controls.h"
 #include "bin/hall.h"
 
+typedef struct{
+    byte index;
+    char initials[4];
+    long score;    
+} score_row;
+
+#define HALL_SIZE 7
+
 /* Procedure definitions */
 void initGame(void);
 void updateGame(void);
@@ -41,6 +49,7 @@ byte paddle_speed;
 long score;
 long price;
 char lives;
+score_row scores[HALL_SIZE];
 
 /* Aux vars */
 unsigned char index;
@@ -63,6 +72,8 @@ void initGame() {
     
     // Init and draw ball
     initBall();
+    
+    displayHall(); ////
 }
 
 void initBall() {
@@ -178,7 +189,8 @@ void initBricks() {
 }
 
 void initScore() {
-	rectangle scoreRect;
+	char i;
+    rectangle scoreRect;
     scoreRect.x = 0;
 	scoreRect.y = 0;
 	scoreRect.width = 128;
@@ -187,6 +199,15 @@ void initScore() {
 	drawRect(&scoreRect);
     printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
     price=5;
+    
+    i=0;
+    do{
+        scores[i].initials[0]='E';
+        scores[i].initials[1]='L';
+        scores[i].initials[2]='B';
+        scores[i].initials[3]='\0';
+        i++;
+    } while(i!=HALL_SIZE);
 }
 
 void cleanBanner() {
@@ -369,7 +390,17 @@ void displayControls() {
 }
 
 void displayHall() {
+    char i, y;
     render_image(hall);
+    i=0;
+    y=52;
+    do{
+        printStr(10, y, font, WHITE, BLACK, scores[0].initials);
+        printBCD(70, y, font, WHITE, BLACK, scores[0].score);
+        y+=10;
+        i++;
+    } while(i!=HALL_SIZE);
+    
     waitStart();
 }
 
