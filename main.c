@@ -5,6 +5,7 @@
 #include <psv.h>
 #include "bin/title.h"
 #include "bin/controls.h"
+#include "bin/hall.h"
 
 /* Procedure definitions */
 void initGame(void);
@@ -24,6 +25,7 @@ void checkTopCols(void);
 void updateScore(void);
 void displayTitle(void);
 void displayControls(void);
+void displayHall(void);
 void draw_lives(void);
 void cleanBanner(void);
 
@@ -260,10 +262,12 @@ void updateBall() {
                 cleanBall(&myball);
                 initBall();
                 drawBall(&myball);
-            }			
+            }
+            // GAME OVER			
             else {
                 printStr(20, 60, font, BLACK, CIAN, "GAME OVER");
                 waitStart();
+                displayHall();
                 cleanBanner();
                 initGame();
             }            
@@ -361,6 +365,11 @@ void displayTitle() {
 
 void displayControls() {
     render_image(controls);
+    waitStart();
+}
+
+void displayHall() {
+    render_image(hall);
     waitStart();
 }
 
