@@ -9,7 +9,7 @@
 
 typedef struct{
     byte index;
-    char initials[4];
+    char initials[8];
     long score;    
 } score_row;
 
@@ -72,8 +72,6 @@ void initGame() {
     
     // Init and draw ball
     initBall();
-    
-    displayHall(); ////
 }
 
 void initBall() {
@@ -202,10 +200,14 @@ void initScore() {
     
     i=0;
     do{
-        scores[i].initials[0]='E';
-        scores[i].initials[1]='L';
-        scores[i].initials[2]='B';
-        scores[i].initials[3]='\0';
+        scores[i].initials[0]='A';
+        scores[i].initials[1]='A';
+        scores[i].initials[2]='A';
+        scores[i].initials[3]='A';
+        scores[i].initials[4]='A';
+        scores[i].initials[5]='A';
+        scores[i].initials[6]='A';
+        scores[i].initials[7]='\0';
         i++;
     } while(i!=HALL_SIZE);
 }
