@@ -405,7 +405,7 @@ void displayHall() {
     
     if(score>saved_data.scores[6].score){
         render_image(input);
-        readStr(16, 58, font, WHITE, BLACK, name);
+        readStr(16, 58, font, WHITE, BLACK, name, 8);
         i=6;
         do {
             if(score>saved_data.scores[i].score) {
