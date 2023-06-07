@@ -6,6 +6,7 @@
 #include "bin/title.h"
 #include "bin/controls.h"
 #include "bin/hall.h"
+#include "bin/input.h"
 
 typedef struct{
     byte index;
@@ -400,6 +401,13 @@ void displayControls() {
 
 void displayHall() {
     char i, y;
+    char name[20];
+    
+    if(score>saved_data.scores[6].score){
+        render_image(input);
+        readStr(16, 58, font, WHITE, BLACK, name);
+    }
+    
     render_image(hall);
     i=0;
     y=52;

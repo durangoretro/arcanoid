@@ -16,7 +16,10 @@ $(BUILD_DIR)/controls.h: controls.png $(BUILD_DIR)
 $(BUILD_DIR)/hall.h: hall.png $(BUILD_DIR)
 	java -jar ${RESCOMP} -n hall -m BACKGROUND -i hall.png -o $(BUILD_DIR)/hall.h
 
-$(BUILD_DIR)/main.casm: $(SOURCE_DIR)/main.c $(BUILD_DIR)/title.h $(BUILD_DIR)/controls.h $(BUILD_DIR)/hall.h $(BUILD_DIR)
+$(BUILD_DIR)/input.h: input.png $(BUILD_DIR)
+	java -jar ${RESCOMP} -n input -m BACKGROUND -i input.png -o $(BUILD_DIR)/input.h
+
+$(BUILD_DIR)/main.casm: $(SOURCE_DIR)/main.c $(BUILD_DIR)/title.h $(BUILD_DIR)/controls.h $(BUILD_DIR)/hall.h $(BUILD_DIR) $(BUILD_DIR)/input.h $(BUILD_DIR)
 	cc65 -I $(DCINC) $(SOURCE_DIR)/main.c -t none --cpu 6502 -o $(BUILD_DIR)/main.s
 
 $(BUILD_DIR)/main.o: $(BUILD_DIR)/main.casm $(BUILD_DIR)
