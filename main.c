@@ -296,7 +296,7 @@ void updateBall() {
             // GAME OVER			
             else {
                 printStr(20, 60, font, BLACK, CIAN, "GAME OVER");
-                printStr(20, 70, font, BLACK, CIAN, "PRESS START...");
+                printStr(20, 70, font, BLACK, CIAN, "PRESS INTRO...");
                 waitStart();
                 displayHall();
                 cleanBanner();
@@ -401,19 +401,34 @@ void displayControls() {
 
 void displayHall() {
     char i, y;
-    char name[20];
+    char name[8];
     
     if(score>saved_data.scores[6].score){
         render_image(input);
         readStr(16, 58, font, WHITE, BLACK, name);
+        i=0;
+        do {
+            if(score>saved_data.scores[i].score) {
+                y=i;
+                i++;
+            }
+        } while(i!=HALL_SIZE);
+        saved_data.scores[y].score=score;
+        
+        // Copy string (strcpy not implemented yet!!!)
+        i=0;
+        do{
+            saved_data.scores[y].initials[i]=name[i];
+            i++;
+        } while(i!=8);
     }
     
     render_image(hall);
     i=0;
     y=52;
     do{
-        printStr(10, y, font, WHITE, BLACK, saved_data.scores[0].initials);
-        printBCD(70, y, font, WHITE, BLACK, saved_data.scores[0].score);
+        printStr(10, y, font, WHITE, BLACK, saved_data.scores[i].initials);
+        printBCD(70, y, font, WHITE, BLACK, saved_data.scores[i].score);
         y+=10;
         i++;
     } while(i!=HALL_SIZE);
