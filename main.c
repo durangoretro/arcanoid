@@ -406,16 +406,19 @@ void displayHall() {
     if(score>saved_data.scores[6].score){
         render_image(input);
         readStr(16, 58, font, WHITE, BLACK, name);
-        i=0;
+        i=6;
         do {
             if(score>saved_data.scores[i].score) {
                 y=i;
-                i++;
+                i--;
             }
-        } while(i!=HALL_SIZE);
-        saved_data.scores[y].score=score;
+        } while(i!=0xFF);
         
+        
+        
+        saved_data.scores[y].score=score;
         // Copy string (strcpy not implemented yet!!!)
+        //copy(saved_data.scores[y].initials, name, 8);
         i=0;
         do{
             saved_data.scores[y].initials[i]=name[i];
