@@ -417,13 +417,7 @@ void displayHall() {
         
         
         saved_data.scores[y].score=score;
-        // Copy string (strcpy not implemented yet!!!)
-        //copy(saved_data.scores[y].initials, name, 8);
-        i=0;
-        do{
-            saved_data.scores[y].initials[i]=name[i];
-            i++;
-        } while(i!=8);
+        copyMem(saved_data.scores[y].initials, name, 8);        
     }
     
     render_image(hall);
