@@ -390,7 +390,7 @@ void draw_lives() {
 void displayTitle() {
     render_image(title);
     getBuildVersion(build_hash);
-    printStr(0, 95, font, WHITE, BLACK, build_hash);
+    printStr(16, 95, font, WHITE, BLACK, build_hash);
     waitStart();
 }
 
