@@ -14,6 +14,11 @@ typedef struct{
 } score_row;
 
 #define HALL_SIZE 7
+typedef struct{
+    score_row scores[HALL_SIZE];
+} storage;
+
+
 
 /* Procedure definitions */
 void initGame(void);
@@ -49,7 +54,8 @@ byte paddle_speed;
 long score;
 long price;
 char lives;
-score_row scores[HALL_SIZE];
+storage saved_data;
+
 
 /* Aux vars */
 unsigned char index;
@@ -200,14 +206,14 @@ void initScore() {
     
     i=0;
     do{
-        scores[i].initials[0]='A';
-        scores[i].initials[1]='A';
-        scores[i].initials[2]='A';
-        scores[i].initials[3]='A';
-        scores[i].initials[4]='A';
-        scores[i].initials[5]='A';
-        scores[i].initials[6]='A';
-        scores[i].initials[7]='\0';
+        saved_data.scores[i].initials[0]='A';
+        saved_data.scores[i].initials[1]='A';
+        saved_data.scores[i].initials[2]='A';
+        saved_data.scores[i].initials[3]='A';
+        saved_data.scores[i].initials[4]='A';
+        saved_data.scores[i].initials[5]='A';
+        saved_data.scores[i].initials[6]='A';
+        saved_data.scores[i].initials[7]='\0';
         i++;
     } while(i!=HALL_SIZE);
 }
@@ -289,6 +295,7 @@ void updateBall() {
             // GAME OVER			
             else {
                 printStr(20, 60, font, BLACK, CIAN, "GAME OVER");
+                printStr(20, 70, font, BLACK, CIAN, "PRESS START...");
                 waitStart();
                 displayHall();
                 cleanBanner();
@@ -397,8 +404,8 @@ void displayHall() {
     i=0;
     y=52;
     do{
-        printStr(10, y, font, WHITE, BLACK, scores[0].initials);
-        printBCD(70, y, font, WHITE, BLACK, scores[0].score);
+        printStr(10, y, font, WHITE, BLACK, saved_data.scores[0].initials);
+        printBCD(70, y, font, WHITE, BLACK, saved_data.scores[0].score);
         y+=10;
         i++;
     } while(i!=HALL_SIZE);
