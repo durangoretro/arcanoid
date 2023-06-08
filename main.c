@@ -2,6 +2,7 @@
 #include <system.h>
 #include <glyph.h>
 #include <font.h>
+#include <music.h>
 //#include <psv.h>
 #include "bin/title.h"
 #include "bin/controls.h"
@@ -18,6 +19,7 @@ typedef struct{
     score_row scores[HALL_SIZE];
 } storage;
 
+const unsigned char clink[4] = {SI5,CORCHEA,0XFF,0XFF};
 
 
 /* Procedure definitions */
