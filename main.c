@@ -2,7 +2,7 @@
 #include <system.h>
 #include <glyph.h>
 #include <font.h>
-#include <psv.h>
+//#include <psv.h>
 #include "bin/title.h"
 #include "bin/controls.h"
 #include "bin/hall.h"
@@ -203,19 +203,6 @@ void initScore() {
 	drawRect(&scoreRect);
     printBCD(80, 0, font, BLACK, PINK_FLAMINGO, score);
     price=5;
-    
-    i=0;
-    do{
-        saved_data.scores[i].initials[0]='A'+i;
-        saved_data.scores[i].initials[1]='A'+i;
-        saved_data.scores[i].initials[2]='A'+i;
-        saved_data.scores[i].initials[3]='A'+i;
-        saved_data.scores[i].initials[4]='A'+i;
-        saved_data.scores[i].initials[5]='A'+i;
-        saved_data.scores[i].initials[6]='A'+i;
-        saved_data.scores[i].initials[7]='\0';
-        i++;
-    } while(i!=HALL_SIZE);
 }
 
 void cleanBanner() {
@@ -405,7 +392,9 @@ void displayHall() {
     if(score>saved_data.scores[6].score){
         render_image(input);
         readStr(16, 58, font, WHITE, BLACK, name, 8);
-        i=6;
+        
+        // Find new score position
+        i=HALL_SIZE-1;
         do {
             if(score>saved_data.scores[i].score) {
                 y=i;
@@ -413,14 +402,13 @@ void displayHall() {
             }
         } while(i!=0xFF);
         
-        //consoleLogStr("Hall y:\n");
-        //consoleLogDecimal(y);
-        
-        i=7;
-        do {
+        // Copy y->y+1 ... HALL_SIZE-2->HALL_SIZE-1
+                
+        i=HALL_SIZE-1;
+        while (i!=y) {
             copyMem(&(saved_data.scores[i]), &(saved_data.scores[i-1]), 12);
-            i--;
-        } while(y<i);
+            i--;            
+        };
         
         saved_data.scores[y].score=score;
         copyMem(saved_data.scores[y].initials, name, 8);        
@@ -440,8 +428,22 @@ void displayHall() {
 }
 
 int main(void){
+    char i;
     displayTitle();   
     displayControls();
+    
+    i=0;
+    do{
+        saved_data.scores[i].initials[0]='A';
+        saved_data.scores[i].initials[1]='A';
+        saved_data.scores[i].initials[2]='A';
+        saved_data.scores[i].initials[3]='A';
+        saved_data.scores[i].initials[4]='A';
+        saved_data.scores[i].initials[5]='A';
+        saved_data.scores[i].initials[6]='A';
+        saved_data.scores[i].initials[7]='\0';
+        i++;
+    } while(i!=HALL_SIZE);
     
     // Init game
     initGame();
