@@ -9,7 +9,6 @@
 #include "bin/input.h"
 
 typedef struct{
-    byte index;
     char initials[8];
     long score;    
 } score_row;
@@ -207,13 +206,13 @@ void initScore() {
     
     i=0;
     do{
-        saved_data.scores[i].initials[0]='A';
-        saved_data.scores[i].initials[1]='A';
-        saved_data.scores[i].initials[2]='A';
-        saved_data.scores[i].initials[3]='A';
-        saved_data.scores[i].initials[4]='A';
-        saved_data.scores[i].initials[5]='A';
-        saved_data.scores[i].initials[6]='A';
+        saved_data.scores[i].initials[0]='A'+i;
+        saved_data.scores[i].initials[1]='A'+i;
+        saved_data.scores[i].initials[2]='A'+i;
+        saved_data.scores[i].initials[3]='A'+i;
+        saved_data.scores[i].initials[4]='A'+i;
+        saved_data.scores[i].initials[5]='A'+i;
+        saved_data.scores[i].initials[6]='A'+i;
         saved_data.scores[i].initials[7]='\0';
         i++;
     } while(i!=HALL_SIZE);
@@ -414,7 +413,14 @@ void displayHall() {
             }
         } while(i!=0xFF);
         
+        //consoleLogStr("Hall y:\n");
+        //consoleLogDecimal(y);
         
+        i=7;
+        do {
+            copyMem(&(saved_data.scores[i]), &(saved_data.scores[i-1]), 12);
+            i--;
+        } while(y<i);
         
         saved_data.scores[y].score=score;
         copyMem(saved_data.scores[y].initials, name, 8);        
