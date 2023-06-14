@@ -63,6 +63,8 @@ storage saved_data;
 unsigned char index;
 char build_hash[17];
 
+const unsigned char clinc[4] = {LA5, FUSA, 0xff,0xff};
+
 /* Game Procedures */
 
 void initGame() {
@@ -329,6 +331,7 @@ void checkBottomCols() {
         brokens++;
         addBCD(&score, &price);
         updateScore();
+        playMelody(clinc);
         price+=price;
     }        
 }
@@ -343,6 +346,7 @@ void checkTopCols() {
         brokens++;
         addBCD(&score, &price);
         updateScore();
+        playMelody(clinc);
         price+=price;
     }  
 }
