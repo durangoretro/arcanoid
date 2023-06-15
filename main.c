@@ -282,7 +282,7 @@ void updateBall() {
             // GAME OVER			
             else {
                 printStr(20, 60, font, BLACK, CIAN, "GAME OVER");
-                printStr(20, 70, font, BLACK, CIAN, "PRESS INTRO...");
+                printStr(20, 70, font, BLACK, CIAN, "PRESS ENTER...");
                 waitStart();
                 displayHall();
                 cleanBanner();
@@ -375,8 +375,6 @@ void draw_lives() {
 
 void displayTitle() {
     render_image(title);
-    getBuildVersion(build_hash);
-    printStr(16, 95, font, WHITE, BLACK, build_hash);
     waitStart();
 }
 
